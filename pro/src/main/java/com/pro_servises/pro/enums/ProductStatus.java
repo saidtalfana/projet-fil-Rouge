@@ -1,4 +1,4 @@
-package com.pro_services.pro.enums;
+package com.pro_servises.pro.enums;
 
 public enum ProductStatus {
     OPTION_1,

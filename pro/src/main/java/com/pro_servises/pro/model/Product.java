@@ -1,17 +1,28 @@
-package com.pro_services.pro.model;
+package com.pro_servises.pro.model;
 
 
-import com.pro_services.pro.enums.Category;
-import com.pro_services.pro.enums.ProductStatus;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+
+import com.pro_servises.pro.enums.Category;
+import com.pro_servises.pro.enums.ProductStatus;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productId;
     private String name;
     private String description;
@@ -27,7 +38,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name ="entrepneur_id")
-    private Entrepreneur entrepneur;
+    private Entrepreneur entrepreneur;
 
     @OneToMany(mappedBy = "product")
     private Set<Rating> rating = new HashSet<>();

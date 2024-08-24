@@ -1,4 +1,4 @@
-package com.pro_services.pro;
+package com.pro_servises.pro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

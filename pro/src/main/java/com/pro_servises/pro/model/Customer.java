@@ -1,5 +1,7 @@
-package com.pro_services.pro.model;
+package com.pro_servises.pro.model;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +14,8 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@DiscriminatorValue("CUSTOMER")
 public class Customer extends Person{
 
 
