@@ -37,8 +37,8 @@ public class Product {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name ="entrepneur_id")
-    private Entrepreneur entrepreneur;
+    @JoinColumn(name ="provider_id")
+    private Provider provider;
 
     @OneToMany(mappedBy = "product")
     private Set<Rating> rating = new HashSet<>();

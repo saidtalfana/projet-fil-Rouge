@@ -1,5 +1,6 @@
 package com.pro_servises.pro.model;
 
+import com.pro_servises.pro.enums.Activity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.Set;
 
 @Setter
@@ -15,11 +17,15 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@DiscriminatorValue("CUSTOMER")
-public class Customer extends Person{
+@DiscriminatorValue("PROVIDER")
+public class Provider extends Person{
+
+    private String logo;
+    private Date startDate;
+    private Activity activity;
+    private String description;
 
 
-
-    @OneToMany(mappedBy = "customer")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "provider")
+    private Set<Product> products ;
 }

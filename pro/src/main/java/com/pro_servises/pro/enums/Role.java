@@ -1,7 +1,14 @@
 package com.pro_servises.pro.enums;
 
-public enum Role {
-    CUSTOMER,
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    USER,
     ADMIN,
-    ENTREPRENEUR
+    PROVIDER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
