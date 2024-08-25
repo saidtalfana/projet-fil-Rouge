@@ -40,7 +40,7 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createPerson);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
