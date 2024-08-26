@@ -21,15 +21,16 @@ public class Order {
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
-    private int orderId;
+    private Long orderId;
     private Date orderDate;
     private Time orderTime;
-    private int orderQuantity;
-    private int orderPrice;
-    private int orderTotal;
+    private Long orderQuantity;
+    private Float orderPrice;
+    private Float orderTotal;
 
-    @OneToMany(mappedBy = "order")
-    private Set<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

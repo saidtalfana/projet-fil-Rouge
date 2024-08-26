@@ -1,4 +1,4 @@
 package com.pro_servises.pro.serviceImp;
 
-public class UserService {
+public class UserServiceImp {
 }

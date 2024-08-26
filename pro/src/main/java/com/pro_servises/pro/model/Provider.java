@@ -1,5 +1,6 @@
 package com.pro_servises.pro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pro_servises.pro.enums.Activity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -27,5 +28,6 @@ public class Provider extends Person{
 
 
     @OneToMany(mappedBy = "provider")
+    @JsonIgnore
     private Set<Product> products ;
 }

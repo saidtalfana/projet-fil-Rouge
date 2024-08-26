@@ -2,6 +2,7 @@ package com.pro_servises.pro.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.enums.ProductStatus;
 import jakarta.persistence.*;
@@ -32,9 +33,8 @@ public class Product {
     private String image;
 
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @OneToMany(mappedBy = "product")
+    private Set<Order> order;
 
     @ManyToOne
     @JoinColumn(name ="provider_id")

@@ -18,6 +18,7 @@ public class Rating {
     @GeneratedValue( strategy = GenerationType.AUTO)
     public Long ratingId;
     private int stars;
+    private String comment;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

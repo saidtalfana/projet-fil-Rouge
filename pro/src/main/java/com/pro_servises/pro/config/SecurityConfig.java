@@ -36,6 +36,16 @@ public class SecurityConfig {
                         expressionInterceptUrlRegistry
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
+
+                                .requestMatchers(POST,"/add_order").hasRole("USER")
+                                .requestMatchers("/delete_order/**").hasRole("USER")
+                                .requestMatchers("/gets_order_by_provider_id").hasRole("PROVIDER")
+                                .requestMatchers("/gets_order_by_user_id").hasRole("USER")
+
+                                .requestMatchers("/api/product/**").hasRole("PROVIDER")
+
+                                .requestMatchers("/api/rating/**").hasRole("USER")
+                                .requestMatchers(GET,"/api/rating/**").hasRole("")
                                 .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())
