@@ -1,4 +1,4 @@
-package com.pro_servises.pro.error;
+package com.pro_servises.pro.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,17 +22,4 @@ public class ApiExceptionsHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<>(details, ex.getStatusCode());
     }
 
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ValidationError validationError = new ValidationError();
-        validationError.setUri(request.getDescription(false));
-
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-
-        for(FieldError f: fieldErrors) {
-            validationError.addError(f.getDefaultMessage());
-        }
-
-
-        return new ResponseEntity<>(validationError, HttpStatus.BAD_REQUEST);
-    }
 }

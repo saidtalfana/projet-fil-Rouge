@@ -1,8 +1,8 @@
 package com.pro_servises.pro.serviceImp;
 
-import com.pro_servises.pro.error.ConflictException;
-import com.pro_servises.pro.error.NotFoundException;
-import com.pro_servises.pro.exception.ResourceNotFoundException;
+import com.pro_servises.pro.exception.ConflictException;
+import com.pro_servises.pro.exception.NotFoundException;
+import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.model.Product;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.repository.ProductRepository;
@@ -23,10 +23,14 @@ public class ProductServiceImp implements ProductService {
    private ProviderRepository providerRepository;
 
 
+//   @Autowired
+//    private ModelMapper modelMapper;
+
+
     @Override
     public Product addProduct(Product product, Integer provider_id) {
         Provider provider = providerRepository.findById(provider_id).orElseThrow(
-                () -> new ResourceNotFoundException("id "+ provider_id + " not found")
+                () -> new NotFoundException("id "+ provider_id + " not found")
         );
 
 
@@ -37,6 +41,11 @@ public class ProductServiceImp implements ProductService {
 
         product.setProvider(provider);
         return productRepository.save(product);    }
+
+
+    public Product addProduct(Product product) {
+        return productRepository.save(product);
+    }
 
     @Override
     public Product findProductById(Long productId) {

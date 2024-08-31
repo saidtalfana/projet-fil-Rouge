@@ -1,11 +1,8 @@
-package com.pro_servises.pro.error;
+package com.pro_servises.pro.exception;
 
 import org.springframework.http.HttpStatus;
 
-/**
- * @author Khalid Elshafie <abolkog@gmail.com>
- * @Created 18/09/2018 10:43 PM.
- */
+
 public class ConflictException extends ApiBaseException {
 
     public ConflictException(String message) {

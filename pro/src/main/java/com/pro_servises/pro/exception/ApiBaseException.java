@@ -1,4 +1,4 @@
-package com.pro_servises.pro.error;
+package com.pro_servises.pro.exception;
 
 import org.springframework.http.HttpStatus;
 
