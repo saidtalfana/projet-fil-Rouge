@@ -1,16 +1,19 @@
 package com.pro_servises.pro.service;
 
-import com.pro_servises.pro.model.Order;
+import com.pro_servises.pro.dto.OrderDto;
 
 import java.util.List;
 
 public interface OrderService {
 
-    Order addOrder(Order order,Long product_id);
+    OrderDto addOrder(OrderDto orderDto, Integer product_id);
 
-    void deleteOrder(Long orderId);
+    void deleteOrderById(Integer order_id);
 
-    List<Order> getAllOrdersByProviderId(Long providerId);
+    OrderDto getOrderById(Integer order_id);
 
-    List<Order> getAllOrdersByUserId(Long userId);
+    List<OrderDto> getAllOrdersByProviderId(Integer provider_id);
+
+    List<OrderDto> getAllOrdersByUserId(Integer user_id);
+
 }

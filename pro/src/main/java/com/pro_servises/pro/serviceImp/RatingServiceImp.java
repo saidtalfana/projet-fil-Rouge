@@ -20,7 +20,7 @@ public class RatingServiceImp implements RatingService {
     private ProductRepository productRepository;
 
     @Override
-    public Rating addRating(Rating rating, Long productId) {
+    public Rating addRating(Rating rating, Integer productId) {
         Product product = productRepository.findById(productId).get();
 
         rating.setProduct(product);
@@ -29,7 +29,7 @@ public class RatingServiceImp implements RatingService {
     }
 
     @Override
-    public Rating updateRating(Rating rating, Long id) {
+    public Rating updateRating(Rating rating, Integer id) {
         Rating existingRating =ratingRepository.findById(id).get();
         existingRating.setComment(rating.getComment());
         existingRating.setStars(rating.getStars());

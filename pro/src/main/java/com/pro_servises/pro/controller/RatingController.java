@@ -14,14 +14,14 @@ public class RatingController {
     private RatingServiceImp ratingServiceImp;
 
     @PostMapping("/add_rating")
-    public Rating addRating(@RequestBody Rating rating,@RequestParam Long product_id ) {
+    public Rating addRating(@RequestBody Rating rating,@RequestParam Integer product_id ) {
         return ratingServiceImp.addRating(rating,product_id);
     }
 
 
 
     @PutMapping("/update_rating/{id}")
-    public Rating updateRating( @RequestBody Rating rating,@PathVariable Long id) {
+    public Rating updateRating( @RequestBody Rating rating,@PathVariable Integer id) {
         return ratingServiceImp.updateRating(rating,id);
     }
 }

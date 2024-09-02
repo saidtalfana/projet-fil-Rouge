@@ -1,17 +1,20 @@
 package com.pro_servises.pro.service;
 
+import com.pro_servises.pro.dto.ProductDto;
 import com.pro_servises.pro.model.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    public Product addProduct(Product product, Integer provider_id);
+    ProductDto addProductDto(ProductDto productDto, Integer provider_id);
 
+    ProductDto getProductById(Integer product_id);
 
-    Product findProductById(Long productId);
+    List<ProductDto> getAllProductsByProviderId(Integer provider_id);
 
-    public List<Product> findAllProductsByProviderId(Integer provider_id);
+    void deleteProductById(Integer productId);
 
-    public void deleteProduct(Long productId);
+    ProductDto updateProduct(ProductDto productDto);
+
 }
