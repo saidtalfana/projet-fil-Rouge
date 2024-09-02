@@ -16,7 +16,7 @@ public class Rating {
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
-    public Long ratingId;
+    public Integer ratingId;
     private int stars;
     private String comment;
 

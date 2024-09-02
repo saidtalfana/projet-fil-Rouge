@@ -21,7 +21,7 @@ public class Order {
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
-    private Long orderId;
+    private Integer orderId;
     private Date orderDate;
     private Time orderTime;
     private Long orderQuantity;

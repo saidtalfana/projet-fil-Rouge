@@ -11,9 +11,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value="select * from Product where provider_id=?" , nativeQuery=true)
-   List<Product> findAllProductsByProviderId(Long provider_id);
-
-
+   List<Product> findAllProductsByProviderId(Integer provider_id);
 
     Product findByName(String name);
 }

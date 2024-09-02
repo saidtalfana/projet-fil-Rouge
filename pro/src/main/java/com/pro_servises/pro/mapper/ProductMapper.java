@@ -5,7 +5,7 @@ import com.pro_servises.pro.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper( ProductMapper.class );
