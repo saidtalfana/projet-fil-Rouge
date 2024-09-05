@@ -22,4 +22,8 @@ public class User extends Person{
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Rating> ratings;
+
 }

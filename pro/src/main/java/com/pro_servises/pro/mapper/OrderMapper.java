@@ -14,7 +14,7 @@ public interface OrderMapper {
 
     OrderDto mapToOrderDto(Order order);
 
-    Order mapToOrder(ProductDto productDto);
+    Order mapToOrder(OrderDto orderDto);
 
 
 

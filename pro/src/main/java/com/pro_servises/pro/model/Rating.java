@@ -23,4 +23,8 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "product_id")
     public Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User user;
 }

@@ -13,8 +13,8 @@ public interface ProductService {
 
     List<ProductDto> getAllProductsByProviderId(Integer provider_id);
 
-    void deleteProductById(Integer productId);
+     void deleteProductById(Integer productId);
 
-    ProductDto updateProduct(ProductDto productDto);
+     ProductDto updateProduct(ProductDto productDto);
 
 }

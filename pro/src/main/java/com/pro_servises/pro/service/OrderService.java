@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface OrderService {
 
-    OrderDto addOrder(OrderDto orderDto, Integer product_id);
+    OrderDto addOrder(OrderDto orderDto, Integer product_id , Integer user_id);
 
     void deleteOrderById(Integer order_id);
 
     OrderDto getOrderById(Integer order_id);
-
-    List<OrderDto> getAllOrdersByProviderId(Integer provider_id);
 
     List<OrderDto> getAllOrdersByUserId(Integer user_id);
 
