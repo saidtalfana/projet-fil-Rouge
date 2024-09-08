@@ -79,12 +79,19 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderMapper::mapToOrderDto)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<OrderDto> getAllOrdersByEnterpriseId(Integer enterprise_id) {
+        List<Order> orders = orderRepository.getAllOrdersByEnterpriseId(enterprise_id);
+
+        return orders.stream()
+                .map(orderMapper::mapToOrderDto)
+                .collect(Collectors.toList());
+    }
 
 
 
     public List<OrderDto> getAllOrders() {
-        List<Order> orders = orderRepository.getAllOrders();
-        System.out.println(orders);
+        List<Order> orders = orderRepository.findAll();
         return orders.stream()
                 .map(orderMapper::mapToOrderDto)
                 .collect(Collectors.toList());

@@ -37,15 +37,15 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
 
-                                .requestMatchers(POST,"/add_order").hasRole("USER")
-                                .requestMatchers("/delete_order/**").hasRole("USER")
-                                .requestMatchers("/gets_order_by_provider_id").hasRole("PROVIDER")
+                                .requestMatchers(POST,"/add_order").permitAll()
+                                .requestMatchers("/delete_order/**").permitAll()
+                                .requestMatchers("/gets_order_by_provider_id").permitAll()
                                 .requestMatchers("/gets_order_by_user_id").permitAll()
 
-                                .requestMatchers("/api/product/**").hasRole("PROVIDER")
+                                .requestMatchers("/api/product/**").permitAll()
 
-                                .requestMatchers("/api/rating/**").hasRole("USER")
-                                .requestMatchers(GET,"/api/rating/**").hasRole("")
+                                .requestMatchers("/api/rating/**").permitAll()
+                                .requestMatchers(GET,"/api/rating/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())

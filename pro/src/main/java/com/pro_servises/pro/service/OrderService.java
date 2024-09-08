@@ -16,6 +16,8 @@ public interface OrderService {
 
     List<OrderDto> getAllOrdersByProductId(Integer product_id);
 
+     List<OrderDto> getAllOrdersByEnterpriseId(Integer enterprise_id);
+
     List<OrderDto> getAllOrders();
 
 }

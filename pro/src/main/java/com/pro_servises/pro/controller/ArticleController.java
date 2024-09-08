@@ -21,7 +21,7 @@ public class ArticleController {
 
     @PostMapping("/add_article/{admin_id}")
     public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto articleDto,
-                                                 @PathVariable("admin_id") Integer admin_id) {
+                                                 @PathVariable Integer admin_id) {
         ArticleDto createdArticle=  articleServiceImpl.addArticle(articleDto,admin_id);
         return ResponseEntity.ok(createdArticle);
     }

@@ -18,12 +18,12 @@ private EnterpriseServiceImp enterpriseServiceImp;
     }
 
  @GetMapping("/get_enterprise/{enterprise_id}")
-    EnterpriseDto getEnterpriseById(Integer enterprise_id){
+    EnterpriseDto getEnterpriseById(@PathVariable Integer enterprise_id){
      return enterpriseServiceImp.getEnterpriseById(enterprise_id);
  }
 
  @PutMapping("/update_enterprise")
-    EnterpriseDto updateEnterprise(EnterpriseDto enterpriseDto){
+    EnterpriseDto updateEnterprise(@RequestBody EnterpriseDto enterpriseDto){
      return enterpriseServiceImp.updateEnterprise(enterpriseDto);
     }
 }

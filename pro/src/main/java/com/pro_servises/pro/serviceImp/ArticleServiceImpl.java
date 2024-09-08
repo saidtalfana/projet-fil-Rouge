@@ -30,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDto addArticle(ArticleDto articleDto, Integer admin_id) {
+
         Article article = articleMapper.mapToArticle(articleDto);
         Admin admin = adminRepository.findById(admin_id).orElseThrow(
                 () -> new NotFoundException("id " + admin_id + " not found"));

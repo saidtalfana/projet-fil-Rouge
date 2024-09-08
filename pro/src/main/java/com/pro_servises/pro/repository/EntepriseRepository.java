@@ -9,6 +9,6 @@ import java.util.Dictionary;
 
 @Repository
 public interface EntepriseRepository extends JpaRepository<Enterprise, Integer> {
-    @Query(value = "SELECT * FROM Enterprise where provider_id = ?1" , nativeQuery = true)
-    Enterprise findByProviderId(Integer providerId);
+//    @Query(value = "SELECT * FROM Enterprise where provider_id = ?1" , nativeQuery = true)
+//    Enterprise findByProviderId(Integer providerId);
 }

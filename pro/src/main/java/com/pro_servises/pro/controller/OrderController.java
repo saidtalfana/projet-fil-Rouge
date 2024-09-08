@@ -41,8 +41,12 @@ public class OrderController {
         return orderServiceImpl.getAllOrdersByProductId(product_id);
     }
 
-    @GetMapping("/gets_order_by_admin")
-    public List<OrderDto> getOrderByAdmin() {
+    @GetMapping("/get_all_order_by_enterprise_id/{enterprise_id}")
+    public List<OrderDto> getAllOrderByEnterpriseId(@PathVariable Integer enterprise_id) {
+        return orderServiceImpl.getAllOrdersByEnterpriseId(enterprise_id);
+    }
+    @GetMapping("/get_all_orders")
+    public List<OrderDto> getAllOrders() {
         return orderServiceImpl.getAllOrders();
     }
 
