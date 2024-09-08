@@ -13,6 +13,8 @@ import com.pro_servises.pro.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,8 @@ public class OrderServiceImpl implements OrderService {
                 () -> new NotFoundException("id " + user_id + " not found"));
 
         order.setUser(user);
+        order.setOrderDate(new Date(System.currentTimeMillis()));
+        order.setOrderTime(new Time(System.currentTimeMillis()));
 
         Order savedOrder = orderRepository.save(order);
         return orderMapper.mapToOrderDto(savedOrder);
@@ -61,14 +65,34 @@ public class OrderServiceImpl implements OrderService {
     @Override
    public List<OrderDto> getAllOrdersByUserId(Integer user_id) {
         List<Order> orders = orderRepository.getAllOrdersByUserId(user_id);
+        System.out.println(orders);
+        return orders.stream()
+                .map(orderMapper::mapToOrderDto)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public List<OrderDto> getAllOrdersByProductId(Integer product_id) {
+        List<Order> orders = orderRepository.getAllOrdersByProductId(product_id);
+        System.out.println(orders);
+        return orders.stream()
+                .map(orderMapper::mapToOrderDto)
+                .collect(Collectors.toList());
+    }
+
+
+
+    public List<OrderDto> getAllOrders() {
+        List<Order> orders = orderRepository.getAllOrders();
+        System.out.println(orders);
         return orders.stream()
                 .map(orderMapper::mapToOrderDto)
                 .collect(Collectors.toList());
 
     }
 
-}
+
+    }
 
 
 

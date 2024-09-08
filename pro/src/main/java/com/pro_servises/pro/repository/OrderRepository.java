@@ -11,6 +11,12 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
-    @Query(value = "select * from Order where user_id=?", nativeQuery=true)
-    List<Order> getAllOrdersByUserId(Integer userId);
+    @Query(value = "select * from Order where user_id=?1", nativeQuery=true)
+    List<Order> getAllOrdersByUserId(Integer user_id);
+
+    @Query(value = "select * from Order where product_id=?1", nativeQuery=true)
+    List<Order> getAllOrdersByProductId(Integer productId);
+
+    @Query(value = "SELECT * FROM Product WHERE provider_id = ?1", nativeQuery = true)
+    List<Order> getAllOrders();
 }

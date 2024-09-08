@@ -19,8 +19,8 @@ public class ProductController {
 
 
     @PostMapping("/add_product")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto, @RequestParam Integer provider_id) {
-      ProductDto createdProduct=  productServiceImp.addProductDto(productDto, provider_id);
+    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto, @RequestParam Integer enterprise_id) {
+      ProductDto createdProduct=  productServiceImp.addProductDto(productDto, enterprise_id);
         return ResponseEntity.ok(createdProduct);
     }
 
@@ -34,8 +34,8 @@ public class ProductController {
 
 
     @GetMapping("/get_products_by_provider_id")
-    public List<ProductDto> getProductsByProviderId(@RequestParam Integer provider_id) {
-        return productServiceImp.getAllProductsByProviderId(provider_id);
+    public List<ProductDto> getProductsByProviderId(@RequestParam Integer enterprise_id) {
+        return productServiceImp.getAllProductsByEnterpriseId(enterprise_id);
     }
 
 

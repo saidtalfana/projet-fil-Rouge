@@ -1,11 +1,14 @@
 package com.pro_servises.pro.serviceImp;
 
+import com.pro_servises.pro.dto.OrderDto;
 import com.pro_servises.pro.dto.ProductDto;
 import com.pro_servises.pro.exception.ConflictException;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.ProductMapper;
+import com.pro_servises.pro.model.Enterprise;
 import com.pro_servises.pro.model.Product;
 import com.pro_servises.pro.model.Provider;
+import com.pro_servises.pro.repository.EntepriseRepository;
 import com.pro_servises.pro.repository.ProductRepository;
 import com.pro_servises.pro.repository.ProviderRepository;
 import com.pro_servises.pro.service.ProductService;
@@ -21,7 +24,7 @@ public class ProductServiceImp implements ProductService{
           private ProductRepository productRepository;
 
     @Autowired
-          private ProviderRepository providerRepository;
+    private EntepriseRepository entepriseRepository;
 
     @Autowired
            private ProductMapper productMapper;
@@ -30,14 +33,14 @@ public class ProductServiceImp implements ProductService{
 
 
     @Override
-    public ProductDto addProductDto(ProductDto productDto, Integer provider_id) {
+    public ProductDto addProductDto(ProductDto productDto, Integer enterprise_id) {
         Product product = productMapper.mapToProduct(productDto);
-        Provider provider = providerRepository.findById(provider_id).orElseThrow(
-                () -> new NotFoundException("id "+ provider_id + " not found"));
+        Enterprise enterprise = entepriseRepository.findById(enterprise_id).orElseThrow(
+                () -> new NotFoundException("id "+ enterprise_id + " not found"));
                   if (productRepository.findByName(productDto.getName()) != null) {
                          throw new ConflictException("Another record with the same title exists");}
 
-        product.setProvider(provider);
+        product.setEnterprise(enterprise);
         Product savedProduct = productRepository.save(product);
         return productMapper.mapToProductDto(savedProduct);
     }
@@ -52,8 +55,8 @@ public class ProductServiceImp implements ProductService{
 
 
     @Override
-    public List<ProductDto> getAllProductsByProviderId(Integer provider_id){
-        List<Product> products = productRepository.findAllProductsByProviderId(provider_id);
+    public List<ProductDto> getAllProductsByEnterpriseId(Integer enterprise_id){
+        List<Product> products = productRepository.findAllProductsByEnterpriseId(enterprise_id);
         return products.stream()
                 .map(productMapper::mapToProductDto)
                 .collect(Collectors.toList());
@@ -78,6 +81,7 @@ public class ProductServiceImp implements ProductService{
         return productMapper.mapToProductDto(updatedProduct);
 
     }
+
 
 
 

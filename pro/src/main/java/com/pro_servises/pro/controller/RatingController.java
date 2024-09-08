@@ -23,8 +23,5 @@ public class RatingController {
     }
 
 
-    @PutMapping("/update_rating/{id}")
-    public Rating updateRating( @RequestBody Rating rating,@PathVariable Integer id) {
-        return ratingServiceImp.updateRating(rating,id);
-    }
+
 }

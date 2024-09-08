@@ -24,9 +24,11 @@ public class Order {
     private Integer orderId;
     private Date orderDate;
     private Time orderTime;
-    private Long orderQuantity;
-    private Float orderPrice;
-    private Float orderTotal;
+    private String name;
+    private String address;
+    private String email;
+    private Integer phoneNumber;
+    private String customerRequest;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

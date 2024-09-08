@@ -31,10 +31,21 @@ public class OrderController {
     public OrderDto getOrder(@PathVariable("order_id") Integer order_id) {
         return orderServiceImpl.getOrderById(order_id);
     }
-    @GetMapping("/gets_order_by_user_id")
-    public List<OrderDto> getOrderByUserId(@RequestParam Integer user_id) {
+    @GetMapping("/gets_order_by_user_id/{user_id}")
+    public List<OrderDto> getOrderByUserId(@PathVariable Integer user_id) {
         return orderServiceImpl.getAllOrdersByUserId(user_id);
     }
+
+    @GetMapping("/gets_order_by_product_id/{product_id}")
+    public List<OrderDto> getOrderByProductId(@PathVariable Integer product_id) {
+        return orderServiceImpl.getAllOrdersByProductId(product_id);
+    }
+
+    @GetMapping("/gets_order_by_admin")
+    public List<OrderDto> getOrderByAdmin() {
+        return orderServiceImpl.getAllOrders();
+    }
+
 
 
 }

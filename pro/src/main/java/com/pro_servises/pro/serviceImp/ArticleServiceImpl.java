@@ -33,8 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleMapper.mapToArticle(articleDto);
         Admin admin = adminRepository.findById(admin_id).orElseThrow(
                 () -> new NotFoundException("id " + admin_id + " not found"));
-        if (articleRepository.findByName(articleDto.getArticle_title()) != null) {
-            throw new ConflictException("Another record with the same title exists");}
+
 
 
             article.setAdmin(admin);
@@ -51,8 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 
         @Override
-        public List<ArticleDto> getAllArticle () {
-            List<Article> articles = articleRepository.findAll();
+        public List<ArticleDto> getAllArticleByAdminId (Integer admin_id) {
+            List<Article> articles = articleRepository.findAllArticleByAdmin(admin_id);
             return articles.stream()
                     .map(articleMapper::mapToArticleDto)
                     .collect(Collectors.toList());
@@ -68,12 +67,12 @@ public class ArticleServiceImpl implements ArticleService {
         public ArticleDto updateArticle (ArticleDto articleDto){
             Article existingArticle = articleRepository.findById(articleDto.getArticle_id()).orElseThrow(
                     () -> new NotFoundException("id " + articleDto.getArticle_id() + " not found"));
-            existingArticle.setArticle_title(articleDto.getArticle_title());
-            existingArticle.setArticle_content(articleDto.getArticle_content());
-            existingArticle.setArticle_author(articleDto.getArticle_author());
-            existingArticle.setArticle_date(articleDto.getArticle_date());
-            existingArticle.setArticle_image(articleDto.getArticle_image());
-            existingArticle.setArticle_type(articleDto.getArticle_type());
+            existingArticle.setArticleTitle(articleDto.getArticle_title());
+            existingArticle.setArticleContent(articleDto.getArticle_content());
+            existingArticle.setArticleAuthor(articleDto.getArticle_author());
+            existingArticle.setArticleDate(articleDto.getArticle_date());
+            existingArticle.setArticleImage(articleDto.getArticle_image());
+            existingArticle.setArticleType(articleDto.getArticle_type());
             Article updatedArticle = articleRepository.save(existingArticle);
             return articleMapper.mapToArticleDto(updatedArticle);
         }

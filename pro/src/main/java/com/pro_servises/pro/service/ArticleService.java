@@ -11,7 +11,7 @@ public interface ArticleService {
 
     ArticleDto getArticleById(Integer article_id);
 
-    List<ArticleDto> getAllArticle();
+    List<ArticleDto> getAllArticleByAdminId(Integer admin_id);
 
     void deleteArticleById(Integer article_id);
 

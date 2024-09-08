@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Setter
 @Getter
-@AllArgsConstructor
+
 @Entity
 @DiscriminatorValue("ADMIN")
 public class Admin extends Person {

@@ -21,13 +21,7 @@ import java.util.Set;
 @DiscriminatorValue("PROVIDER")
 public class Provider extends Person{
 
-    private String logo;
-    private Date startDate;
-    private Activity activity;
-    private String description;
-
 
     @OneToMany(mappedBy = "provider")
-    @JsonIgnore
-    private Set<Product> products ;
+    private Set<Enterprise> enterprises;
 }
