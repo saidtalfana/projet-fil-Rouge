@@ -19,10 +19,9 @@ public class ArticleController {
     private ArticleServiceImpl articleServiceImpl;
 
 
-    @PostMapping("/add_article/{admin_id}")
-    public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto articleDto,
-                                                 @PathVariable Integer admin_id) {
-        ArticleDto createdArticle=  articleServiceImpl.addArticle(articleDto,admin_id);
+    @PostMapping("/add_article")
+    public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto articleDto) {
+        ArticleDto createdArticle=  articleServiceImpl.addArticle(articleDto);
         return ResponseEntity.ok(createdArticle);
     }
 
@@ -35,9 +34,9 @@ public class ArticleController {
 
 
 
-    @GetMapping("/get_articles_by_admin_id/{admin_id}")
-    public List<ArticleDto> getArticles(@PathVariable  Integer admin_id) {
-        return articleServiceImpl.getAllArticleByAdminId(admin_id);
+    @GetMapping("/get_articles")
+    public List<ArticleDto> getArticles() {
+        return articleServiceImpl.getAllArticle();
     }
 
 

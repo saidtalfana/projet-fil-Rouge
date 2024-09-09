@@ -7,11 +7,11 @@ import java.util.List;
 public interface ArticleService {
 
 
-    ArticleDto addArticle(ArticleDto articleDto, Integer admin_id);
+    ArticleDto addArticle(ArticleDto articleDto);
 
     ArticleDto getArticleById(Integer article_id);
 
-    List<ArticleDto> getAllArticleByAdminId(Integer admin_id);
+    List<ArticleDto> getAllArticle();
 
     void deleteArticleById(Integer article_id);
 
