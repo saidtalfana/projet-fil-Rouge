@@ -10,4 +10,7 @@ public interface EnterpriseService {
     EnterpriseDto getEnterpriseById(Integer provider_id);
 
     EnterpriseDto updateEnterprise(EnterpriseDto enterpriseDto);
+
+    EnterpriseDto getEnterprise(Integer enterpriseId);
+
 }

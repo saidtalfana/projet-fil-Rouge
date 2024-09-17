@@ -14,6 +14,7 @@ import com.pro_servises.pro.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDto addArticle(ArticleDto articleDto) {
 
         Article article = articleMapper.mapToArticle(articleDto);
+        article.setArticleDate(new Date(System.currentTimeMillis()));
 
             Article savedArticle = articleRepository.save(article);
             return articleMapper.mapToArticleDto(savedArticle);

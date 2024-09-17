@@ -36,23 +36,23 @@ public class SecurityConfig {
                         expressionInterceptUrlRegistry
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
-
-                                .requestMatchers(POST,"/add_order").permitAll()
-                                .requestMatchers(GET,"/api/order/get_order/").hasRole("PROVIDER")
-                                .requestMatchers(GET,"/api/order/gets_order_by_product_id").hasRole("PROVIDER")
-
-                                .requestMatchers(POST,"/api/order/get_all_order_by_enterprise_id").hasRole("PROVIDER")
-                                .requestMatchers(POST,"/add_order").permitAll()
-                                .requestMatchers("/api/article/**").hasRole("ADMIN")
-                                .requestMatchers("/api/enterprise/**").permitAll()
-                                .requestMatchers("/delete_order/**").permitAll()
-                                .requestMatchers("/gets_order_by_provider_id").permitAll()
-                                .requestMatchers("/gets_order_by_user_id").permitAll()
-
-                                .requestMatchers("/api/product/**").permitAll()
-
-                                .requestMatchers("/api/rating/**").permitAll()
-                                .requestMatchers(GET,"/api/rating/**").permitAll()
+//
+//                                .requestMatchers(POST,"/add_order").permitAll()
+//                                .requestMatchers(GET,"/api/order/get_order/").hasRole("PROVIDER")
+//                                .requestMatchers(GET,"/api/order/gets_order_by_product_id").hasRole("PROVIDER")
+//
+//                                .requestMatchers(POST,"/api/order/get_all_order_by_enterprise_id").hasRole("PROVIDER")
+//                                .requestMatchers(POST,"/add_order").permitAll()
+//                                .requestMatchers("/api/article/**").hasRole("ADMIN")
+//                                .requestMatchers("/api/enterprise/**").permitAll()
+//                                .requestMatchers("/delete_order/**").permitAll()
+//                                .requestMatchers("/gets_order_by_provider_id").permitAll()
+//                                .requestMatchers("/gets_order_by_user_id").permitAll()
+//
+//                                .requestMatchers("/api/product/**").permitAll()
+//
+//                                .requestMatchers("/api/rating/**").permitAll()
+//                                .requestMatchers(GET,"/api/rating/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())

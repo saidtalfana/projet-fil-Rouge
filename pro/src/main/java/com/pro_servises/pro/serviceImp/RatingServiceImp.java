@@ -1,5 +1,6 @@
 package com.pro_servises.pro.serviceImp;
 
+import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.model.Product;
 import com.pro_servises.pro.model.Rating;
 import com.pro_servises.pro.model.User;
@@ -23,10 +24,19 @@ public class RatingServiceImp implements RatingService {
     @Autowired
     private UserRepository userRepository;
 
+
+
+
+
+
+
     @Override
     public Rating addRating(Rating rating, Integer product_id, Integer user_id) {
-        Product product = productRepository.findById(product_id).get();
-        User user = userRepository.findById(user_id).get();
+        Product product = productRepository.findById(product_id)
+                .orElseThrow(() -> new NotFoundException("Product id " + product_id + " not found"));
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new NotFoundException("User id " + user_id + " not found"));
+
         rating.setProduct(product);
         rating.setUser(user);
 
@@ -35,10 +45,32 @@ public class RatingServiceImp implements RatingService {
 
     @Override
     public Rating updateRating(Rating rating, Integer id) {
-        Rating existingRating =ratingRepository.findById(id).get();
+        Rating existingRating = ratingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Rating id " + id + " not found"));
+
         existingRating.setComment(rating.getComment());
         existingRating.setStars(rating.getStars());
 
         return ratingRepository.save(existingRating);
     }
+
+
+//    @Override
+//    public Rating addRating(Rating rating, Integer product_id, Integer user_id) {
+//        Product product = productRepository.findById(product_id).get();
+//        User user = userRepository.findById(user_id).get();
+//        rating.setProduct(product);
+//        rating.setUser(user);
+//
+//        return ratingRepository.save(rating);
+//    }
+//
+//    @Override
+//    public Rating updateRating(Rating rating, Integer id) {
+//        Rating existingRating =ratingRepository.findById(id).get();
+//        existingRating.setComment(rating.getComment());
+//        existingRating.setStars(rating.getStars());
+//
+//        return ratingRepository.save(existingRating);
+//    }
 }

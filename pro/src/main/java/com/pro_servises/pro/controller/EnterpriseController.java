@@ -17,13 +17,17 @@ private EnterpriseServiceImp enterpriseServiceImp;
         return enterpriseServiceImp.addEnterprise(enterpriseDto, provider_id);
     }
 
- @GetMapping("/get_enterprise/{enterprise_id}")
-    EnterpriseDto getEnterpriseById(@PathVariable Integer enterprise_id){
-     return enterpriseServiceImp.getEnterpriseById(enterprise_id);
+ @GetMapping("/get_enterprise/{provider_id}")
+    EnterpriseDto getEnterpriseById(@PathVariable Integer provider_id){
+     return enterpriseServiceImp.getEnterpriseById(provider_id);
  }
 
  @PutMapping("/update_enterprise")
     EnterpriseDto updateEnterprise(@RequestBody EnterpriseDto enterpriseDto){
      return enterpriseServiceImp.updateEnterprise(enterpriseDto);
+    }
+    @GetMapping("/get_enterprise")
+    EnterpriseDto getEnterprise(@RequestParam Integer enterprise_id){
+     return enterpriseServiceImp.getEnterprise(enterprise_id);
     }
 }

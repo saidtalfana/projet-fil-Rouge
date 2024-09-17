@@ -34,7 +34,7 @@ public class EnterpriseServiceImp implements EnterpriseService {
 
     @Override
     public EnterpriseDto getEnterpriseById(Integer provider_id) {
- Enterprise enterprise = enterpriseRepository.findById(provider_id).get();
+ Enterprise enterprise = enterpriseRepository.findByProviderId(provider_id);
     return enterpriseMapper.mapToEnterpriseDto(enterprise);
     }
 
@@ -50,6 +50,11 @@ public class EnterpriseServiceImp implements EnterpriseService {
  Enterprise updatedEnterprise = enterpriseRepository.save(existingEnterprise);
 
  return enterpriseMapper.mapToEnterpriseDto(updatedEnterprise);
+    }
+@Override
+    public EnterpriseDto getEnterprise(Integer enterpriseId) {
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId).get();
+        return enterpriseMapper.mapToEnterpriseDto(enterprise);
     }
 }
 

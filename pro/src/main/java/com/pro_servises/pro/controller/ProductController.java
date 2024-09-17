@@ -33,7 +33,7 @@ public class ProductController {
 
 
 
-    @GetMapping("/get_products_by_provider_id")
+    @GetMapping("/get_products_by_enterprise_id")
     public List<ProductDto> getProductsByProviderId(@RequestParam Integer enterprise_id) {
         return productServiceImp.getAllProductsByEnterpriseId(enterprise_id);
     }
@@ -50,5 +50,11 @@ public class ProductController {
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         return productServiceImp.updateProduct(productDto);
     }
+
+    @GetMapping("/get_all_product")
+    public List<ProductDto> getAllProduct() {
+        return productServiceImp.getAllProduct();
+    }
+
 
 }

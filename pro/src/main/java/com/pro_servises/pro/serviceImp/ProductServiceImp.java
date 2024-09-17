@@ -82,7 +82,11 @@ public class ProductServiceImp implements ProductService{
 
     }
 
-
-
-
+     @Override
+    public List<ProductDto> getAllProduct() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::mapToProductDto)
+                .collect(Collectors.toList());
+    }
 }
