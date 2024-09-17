@@ -27,8 +27,12 @@ public class PersonService {
     public Person signUp(Role role, SignupRequest signUpRequest) {
         String hashedPassword = passwordEncoder.encode(signUpRequest.getPassword());
 
+        if (role == null) {
+            throw new IllegalArgumentException("Invalid person type");
+        }
         Person person;
         switch (role) {
+
             case ADMIN:
                 person = new Admin();
                 person.setRoles(Role.ADMIN);
