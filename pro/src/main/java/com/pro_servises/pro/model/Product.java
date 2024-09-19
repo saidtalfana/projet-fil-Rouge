@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.HashSet;
@@ -32,7 +32,10 @@ public class Product {
     private Double price;
     private Category category;
     private ProductStatus productStatus;
-    private String image;
+
+    @Lob
+    @Column(length = 1000000) // Adjust length as needed for images
+    private byte[] image;
 
 
     @OneToMany(mappedBy = "product")

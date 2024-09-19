@@ -33,7 +33,7 @@ public class ProductServiceImp implements ProductService{
 
 
     @Override
-    public ProductDto addProductDto(ProductDto productDto, Integer enterprise_id) {
+    public ProductDto addProductDto(ProductDto productDto, Integer enterprise_id , byte[] imageBytes) {
         Product product = productMapper.mapToProduct(productDto);
         Enterprise enterprise = entepriseRepository.findById(enterprise_id).orElseThrow(
                 () -> new NotFoundException("id "+ enterprise_id + " not found"));
@@ -41,6 +41,7 @@ public class ProductServiceImp implements ProductService{
                          throw new ConflictException("Another record with the same title exists");}
 
         product.setEnterprise(enterprise);
+                  product.setImage(imageBytes);
         Product savedProduct = productRepository.save(product);
         return productMapper.mapToProductDto(savedProduct);
     }
@@ -76,7 +77,6 @@ public class ProductServiceImp implements ProductService{
         existingProduct.setPrice(productDto.getPrice());
         existingProduct.setCategory(productDto.getCategory());
         existingProduct.setProductStatus(productDto.getProductStatus());
-        existingProduct.setImage(productDto.getImage());
         Product updatedProduct = productRepository.save(existingProduct);
         return productMapper.mapToProductDto(updatedProduct);
 
