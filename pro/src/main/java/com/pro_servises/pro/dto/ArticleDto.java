@@ -1,11 +1,14 @@
 package com.pro_servises.pro.dto;
 
 
+import jakarta.persistence.Transient;
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Date;
 
 @Data
+@Builder
 public class ArticleDto {
 
 
@@ -15,5 +18,6 @@ public class ArticleDto {
     private String articleAuthor;
     private Date articleDate;
     private String articleType;
-    private String articleImage;
+    @Transient
+    private byte[] articleImage;
 }

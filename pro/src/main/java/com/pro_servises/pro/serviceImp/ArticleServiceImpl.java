@@ -30,11 +30,11 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public ArticleDto addArticle(ArticleDto articleDto) {
+    public ArticleDto addArticle(ArticleDto articleDto ,byte[] imageBytes) {
 
         Article article = articleMapper.mapToArticle(articleDto);
         article.setArticleDate(new Date(System.currentTimeMillis()));
-
+        article.setArticleImage(imageBytes);
             Article savedArticle = articleRepository.save(article);
             return articleMapper.mapToArticleDto(savedArticle);
         }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ArticleService {
 
 
-    ArticleDto addArticle(ArticleDto articleDto);
+    ArticleDto addArticle(ArticleDto articleDto,byte[] articleImage);
 
     ArticleDto getArticleById(Integer article_id);
 

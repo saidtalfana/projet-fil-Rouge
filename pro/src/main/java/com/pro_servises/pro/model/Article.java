@@ -23,7 +23,10 @@ public class Article {
     private String articleAuthor;
     private Date articleDate;
     private String articleType;
-    private String articleImage;
+
+    @Lob
+    @Column(length = 1000000) // Adjust length as needed for images
+    private byte[] articleImage;
 
 
     @ManyToOne
