@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 
@@ -121,6 +122,13 @@ public class ProductController {
     public List<ProductDto> getAllProduct() {
         return productServiceImp.getAllProduct();
     }
+
+//    @GetMapping("/search")
+//    List<Product> getProductBySearch( @RequestParam(required = false) Float price,
+//                                         @RequestParam(required = false) String name,
+//                                         @RequestParam(required = false) String category) {
+//        return productServiceImp.searchProducts( price,name,category);
+//    }
 
 
 }

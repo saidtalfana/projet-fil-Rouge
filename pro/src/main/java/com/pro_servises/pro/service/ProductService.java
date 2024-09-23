@@ -21,6 +21,8 @@ public interface ProductService {
 
      List<ProductDto> getAllProduct();
 
+//    List<Product> searchProducts(Float price, String name, String category);
+
 
 
 }

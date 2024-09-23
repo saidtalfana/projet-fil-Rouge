@@ -14,6 +14,8 @@ import com.pro_servises.pro.repository.ProviderRepository;
 import com.pro_servises.pro.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +79,7 @@ public class ProductServiceImp implements ProductService{
         existingProduct.setPrice(productDto.getPrice());
         existingProduct.setCategory(productDto.getCategory());
         existingProduct.setProductStatus(productDto.getProductStatus());
+        existingProduct.setImage(productDto.getImage());
         Product updatedProduct = productRepository.save(existingProduct);
         return productMapper.mapToProductDto(updatedProduct);
 
@@ -89,4 +92,28 @@ public class ProductServiceImp implements ProductService{
                 .map(productMapper::mapToProductDto)
                 .collect(Collectors.toList());
     }
+
+
+
+//    @Override
+//    public List<Product> searchProducts(Float price, String name, String category) {
+//        if (price != null && name != null && category != null) {
+////            return eventRepository.findByDateAndLocationAndCategory(date, location, category);
+//            return productRepository.findByNameAndPriceAndCategory(name, price, category);
+//        } else if (price != null && name != null) {
+//            return productRepository.findByNameAndPrice(name, price);
+//        } else if (price != null && category != null) {
+//           return productRepository.findByPriceAndCategory( price, category);
+//        } else if (name != null && category != null) {
+//            return productRepository.findByNameAndCategory(name, category);
+//        } else if (price != null) {
+//            return productRepository.findByProductPrice(price);
+//        } else if (name != null) {
+//            return productRepository.findByProductName(name);
+//        } else if (category != null) {
+//            return productRepository.findByCategory(category);
+//        } else {
+//            return productRepository.findAll();
+//        }
+//    }
 }
