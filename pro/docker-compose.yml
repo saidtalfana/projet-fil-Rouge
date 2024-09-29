@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  server:
+    build: .
+    ports:
+      - "1998:1998"
+    depends_on:
+      - mysqldb
+    networks:
+      - docker_network
+
+  mysqldb:
+    image: "mysql:latest"
+    environment:
+      MYSQL_DATABASE: two
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysqldb:/var/lib/mysql
+    networks:
+      - docker_network
+
+volumes:
+  mysqldb:
+
+networks:
+  docker_network:
+    driver: bridge
+

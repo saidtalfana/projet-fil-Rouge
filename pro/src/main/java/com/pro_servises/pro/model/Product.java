@@ -2,7 +2,9 @@ package com.pro_servises.pro.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.enums.ProductStatus;
 import jakarta.persistence.*;
@@ -39,13 +41,16 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product")
+    @JsonManagedReference
     private Set<Order> order;
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
+    @JsonBackReference
     private Enterprise enterprise;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private Set<Rating> rating = new HashSet<>();
 
 
