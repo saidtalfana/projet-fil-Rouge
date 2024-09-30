@@ -1,6 +1,7 @@
 package com.pro_servises.pro.serviceImp;
 
 import com.pro_servises.pro.dto.OrderDto;
+import com.pro_servises.pro.enums.OrderStatus;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.OrderMapper;
 import com.pro_servises.pro.model.Order;
@@ -38,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
         Product product = productRepository.findById(product_id).orElseThrow(
                 () -> new NotFoundException("id " + product_id + " not found"));
         order.setProduct(product);
+        order.setOrderStatus(OrderStatus.inProgress);
 
         User user = userRepository.findById(user_id).orElseThrow(
                 () -> new NotFoundException("id " + user_id + " not found"));

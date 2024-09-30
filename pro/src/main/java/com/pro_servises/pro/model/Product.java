@@ -47,6 +47,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     @JsonBackReference
+    @JsonIgnore
     private Enterprise enterprise;
 
     @OneToMany(mappedBy = "product")

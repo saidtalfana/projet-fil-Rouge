@@ -11,6 +11,8 @@ import com.pro_servises.pro.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RatingServiceImp implements RatingService {
 
@@ -26,7 +28,13 @@ public class RatingServiceImp implements RatingService {
 
 
 
+    public Rating addRat(Rating rating) {
+        return ratingRepository.save(rating);
+    }
 
+    public List<Rating> getRatingsByProductId(Integer productId) {
+        return ratingRepository.findByProductId(productId);
+    }
 
 
 
@@ -55,22 +63,5 @@ public class RatingServiceImp implements RatingService {
     }
 
 
-//    @Override
-//    public Rating addRating(Rating rating, Integer product_id, Integer user_id) {
-//        Product product = productRepository.findById(product_id).get();
-//        User user = userRepository.findById(user_id).get();
-//        rating.setProduct(product);
-//        rating.setUser(user);
-//
-//        return ratingRepository.save(rating);
-//    }
-//
-//    @Override
-//    public Rating updateRating(Rating rating, Integer id) {
-//        Rating existingRating =ratingRepository.findById(id).get();
-//        existingRating.setComment(rating.getComment());
-//        existingRating.setStars(rating.getStars());
-//
-//        return ratingRepository.save(existingRating);
-//    }
+
 }

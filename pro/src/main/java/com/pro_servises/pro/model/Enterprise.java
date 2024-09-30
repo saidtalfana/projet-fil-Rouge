@@ -1,5 +1,6 @@
 package com.pro_servises.pro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pro_servises.pro.enums.Activity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,12 @@ public class Enterprise {
 
     @ManyToOne
     @JoinColumn(name = "provider_id")
+    @JsonIgnore
     private Provider provider;
 
 
     @OneToMany(mappedBy = "enterprise")
+    @JsonIgnore
     private Set<Product> products;
 
 }

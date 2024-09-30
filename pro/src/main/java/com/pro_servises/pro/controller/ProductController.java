@@ -142,5 +142,20 @@ public class ProductController {
         return productServiceImp.getProducts(pageable);
     }
 
+    @GetMapping("/filter")
+    public List<Product> filterProducts(
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) String name) {
+        return productServiceImp.filterProducts(category, minPrice, maxPrice, name);
+    }
 
+    @GetMapping("/recommend")
+    public ResponseEntity<List<Product>> recommendProducts(
+            @RequestParam Category category,
+            @RequestParam Double price) {
+        List<Product> recommendedProducts = productServiceImp.recommendByCategoryAndPrice(category, price);
+        return ResponseEntity.ok(recommendedProducts);
+    }
 }

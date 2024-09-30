@@ -1,7 +1,9 @@
 package com.pro_servises.pro.serviceImp;
 
+import com.pro_servises.pro.Specification.ProductSpecification;
 import com.pro_servises.pro.dto.OrderDto;
 import com.pro_servises.pro.dto.ProductDto;
+import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.exception.ConflictException;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.ProductMapper;
@@ -15,6 +17,7 @@ import com.pro_servises.pro.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -99,26 +102,17 @@ public class ProductServiceImp implements ProductService{
         return productRepository.findAll(pageable);
     }
 
+    public List<Product> filterProducts(Category category, Double minPrice, Double maxPrice, String name) {
+        Specification<Product> spec = ProductSpecification.filterByCategoryAndPriceAndName(category, minPrice, maxPrice, name);
+        return productRepository.findAll(spec);
+    }
 
-//    @Override
-//    public List<Product> searchProducts(Float price, String name, String category) {
-//        if (price != null && name != null && category != null) {
-////            return eventRepository.findByDateAndLocationAndCategory(date, location, category);
-//            return productRepository.findByNameAndPriceAndCategory(name, price, category);
-//        } else if (price != null && name != null) {
-//            return productRepository.findByNameAndPrice(name, price);
-//        } else if (price != null && category != null) {
-//           return productRepository.findByPriceAndCategory( price, category);
-//        } else if (name != null && category != null) {
-//            return productRepository.findByNameAndCategory(name, category);
-//        } else if (price != null) {
-//            return productRepository.findByProductPrice(price);
-//        } else if (name != null) {
-//            return productRepository.findByProductName(name);
-//        } else if (category != null) {
-//            return productRepository.findByCategory(category);
-//        } else {
-//            return productRepository.findAll();
-//        }
-//    }
+
+    public List<Product> recommendByCategoryAndPrice(Category category, Double price) {
+        return productRepository.findByCategoryAndPrice(category, price);
+    }
+
+    public Enterprise getEnterpriseByProductId(Integer productId) {
+        return entepriseRepository.findByProductId(productId);
+    }
 }

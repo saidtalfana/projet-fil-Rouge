@@ -1,6 +1,7 @@
 package com.pro_servises.pro.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pro_servises.pro.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Order {
     private String email;
     private String phoneNumber;
     private String customerRequest;
+    private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
