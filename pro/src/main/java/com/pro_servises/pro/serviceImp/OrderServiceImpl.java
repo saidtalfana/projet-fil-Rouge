@@ -33,13 +33,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private EmailServic emailService;
+
     @Override
    public OrderDto addOrder(OrderDto orderDto, Integer product_id , Integer user_id) {
         Order order = orderMapper.mapToOrder(orderDto);
         Product product = productRepository.findById(product_id).orElseThrow(
                 () -> new NotFoundException("id " + product_id + " not found"));
         order.setProduct(product);
-        order.setOrderStatus(OrderStatus.inProgress);
+        order.setOrderStatus(OrderStatus.pending);
 
         User user = userRepository.findById(user_id).orElseThrow(
                 () -> new NotFoundException("id " + user_id + " not found"));
@@ -101,6 +104,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    public void updateOrderStatusToDone(Integer orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Update order status
+        order.setOrderStatus(OrderStatus.done);
+        orderRepository.save(order);
+
+        // Send email to the customer asking for rating and comments
+        emailService.sendRatingPrompt(order.getUser().getEmail(), order.getProduct().getName());
+    }
     }
 
 

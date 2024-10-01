@@ -5,6 +5,7 @@ import com.pro_servises.pro.model.Order;
 import com.pro_servises.pro.service.OrderService;
 import com.pro_servises.pro.serviceImp.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +51,26 @@ public class OrderController {
         return orderServiceImpl.getAllOrders();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+        @PutMapping("/update-status/{orderId}")
+        public ResponseEntity<String> updateOrderStatusToDone(@PathVariable Integer orderId) {
+            try {
+                orderServiceImpl.updateOrderStatusToDone(orderId);
+                return ResponseEntity.ok("Order status updated to 'done', and rating prompt email sent to the customer.");
+            } catch (RuntimeException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
 
 
 }
