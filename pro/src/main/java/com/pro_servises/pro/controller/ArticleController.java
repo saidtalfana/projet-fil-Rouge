@@ -1,27 +1,23 @@
 package com.pro_servises.pro.controller;
 
 import com.pro_servises.pro.dto.ArticleDto;
-import com.pro_servises.pro.dto.ProductDto;
-import com.pro_servises.pro.enums.Category;
-import com.pro_servises.pro.enums.ProductStatus;
-import com.pro_servises.pro.service.ArticleService;
 import com.pro_servises.pro.serviceImp.ArticleServiceImpl;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/article")
 public class ArticleController {
 
-    @Autowired
-    private ArticleServiceImpl articleServiceImpl;
+    private final ArticleServiceImpl articleServiceImpl;
+
+    public ArticleController(ArticleServiceImpl articleServiceImpl) {
+        this.articleServiceImpl = articleServiceImpl;
+    }
 
     @PostMapping("/add_article")
     public ResponseEntity<ArticleDto> addArticle(@RequestParam String articleTitle,
@@ -31,7 +27,6 @@ public class ArticleController {
                                                  @RequestPart("articleImage") MultipartFile articleImage) throws IOException
 
     {
-        System.out.printf("zise if image" + articleImage.getSize());
 
         byte[] imageBytes = articleImage.getBytes();
         ArticleDto articleDto = ArticleDto.builder()
