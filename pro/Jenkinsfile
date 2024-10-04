@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         maven 'mvn'
+        jdk 'jdk21' // Ensure this matches the name in Jenkins Global Tool Configuration
     }
 
     environment {
@@ -22,54 +23,48 @@ pipeline {
             steps {
                 dir('pro') {
                     bat "mvn clean install"
-                    //bat "mvn test"
+                    bat "mvn test"
                 }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar-server') {
+                withSonarQubeEnv(SONARQUBE_SERVER) {
                     bat "mvn sonar:sonar -Dsonar.projectKey=pro_services -Dsonar.host.url=http://localhost:9000 -Dsonar.token=${SONAR_TOKEN}"
                 }
             }
         }
 
-//         stage('Quality Gate Check') {
-//             steps {
-//                 timeout(time: 5, unit: 'MINUTES') {
-//                     waitForQualityGate abortPipeline: true
-//                 }
-//             }
-//         }
+        stage('Quality Gate Check') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
         stage('Build Docker Images') {
             steps {
-                 dir('pro') {
-                     bat "docker build -t pro-service-image ."
-                 }
+                dir('pro') {
+                    bat "docker build -t pro-service-image ."
+                }
             }
         }
 
         stage('Tag and Push Docker Images') {
             steps {
                 script {
+                    def dockerTag = "${env.BUILD_NUMBER}"  // Use build number for the Docker tag
                     docker.withRegistry("https://index.docker.io/v1/", 'docker-hub-credential') {
-                         bat """
-                             docker push saidtalfana98/projet-fil-rouge:tagname
-                         """
+                        bat """
+                            docker tag pro-service-image:latest ${DOCKER_HUB_REPO}:${dockerTag}
+                            docker push ${DOCKER_HUB_REPO}:${dockerTag}
+                        """
                     }
                 }
             }
         }
-
-//         stage('Run Docker Compose') {
-//             steps {
-//                 dir('artisanat-backend') {
-//                     bat 'docker-compose up -d'
-//                 }
-//             }
-//         }
     }
 
     post {
