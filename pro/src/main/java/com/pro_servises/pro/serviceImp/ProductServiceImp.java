@@ -98,21 +98,30 @@ public class ProductServiceImp implements ProductService{
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Page<Product> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
-
+    @Override
     public List<Product> filterProducts(Category category, Double minPrice, Double maxPrice, String name) {
         Specification<Product> spec = ProductSpecification.filterByCategoryAndPriceAndName(category, minPrice, maxPrice, name);
         return productRepository.findAll(spec);
     }
 
-
+    @Override
     public List<Product> recommendByCategoryAndPrice(Category category, Double price) {
         return productRepository.findByCategoryAndPrice(category, price);
     }
-
+    @Override
     public Enterprise getEnterpriseByProductId(Integer productId) {
         return entepriseRepository.findByProductId(productId);
+    }
+
+    public long countProductsByEnterprise(Long enterpriseId) {
+        return productRepository.countProductsByEnterprise(enterpriseId);
+    }
+
+    public List<Product> getProductsWithOrders() {
+        return productRepository.findProductsWithOrders();
     }
 }

@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
 import java.util.List;
 
 
@@ -157,5 +153,14 @@ public class ProductController {
             @RequestParam Double price) {
         List<Product> recommendedProducts = productServiceImp.recommendByCategoryAndPrice(category, price);
         return ResponseEntity.ok(recommendedProducts);
+    }
+    @GetMapping("/countByEnterprise/{enterpriseId}")
+    public long countProductsByEnterprise(@PathVariable Long enterpriseId) {
+        return productServiceImp.countProductsByEnterprise(enterpriseId);
+    }
+
+    @GetMapping("/with-orders")
+    public List<Product> getProductsWithOrders() {
+        return productServiceImp.getProductsWithOrders();
     }
 }

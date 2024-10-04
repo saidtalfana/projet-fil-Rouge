@@ -20,4 +20,6 @@ public interface OrderService {
 
     List<OrderDto> getAllOrders();
 
+    void updateOrderStatusToDone(Integer orderId);
+
 }

@@ -40,4 +40,5 @@ private EnterpriseServiceImp enterpriseServiceImp;
     public Enterprise getEnterpriseByProductId(@PathVariable Integer id) {
         return productServiceImp.getEnterpriseByProductId(id);
     }
+
 }

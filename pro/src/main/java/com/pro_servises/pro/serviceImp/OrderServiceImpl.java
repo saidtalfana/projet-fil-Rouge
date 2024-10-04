@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
+    @Override
     public List<OrderDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream()
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-
+    @Override
     public void updateOrderStatusToDone(Integer orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
 

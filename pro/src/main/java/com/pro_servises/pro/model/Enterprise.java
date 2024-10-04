@@ -24,6 +24,8 @@ public class Enterprise {
     private String enterpriseDescription;
     private String enterpriseLogo;
     private Activity activity;
+    private String phoneNumber;
+    private String email;
 
 
     @ManyToOne

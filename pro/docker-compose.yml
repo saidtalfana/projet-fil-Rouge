@@ -1,31 +1,24 @@
-version: "3.8"
-
+version: "3.4"
 services:
-  server:
+  docnet:
     build: .
+    container_name: fil_rouge
+    restart: always
     ports:
       - "1998:1998"
     depends_on:
       - mysqldb
-    networks:
-      - docker_network
 
   mysqldb:
     image: "mysql:latest"
-    environment:
-      MYSQL_DATABASE: two
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    restart: always
     ports:
       - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=spring
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - mysqldb:/var/lib/mysql
-    networks:
-      - docker_network
+      - db:/var/lib/mysql
 
 volumes:
-  mysqldb:
-
-networks:
-  docker_network:
-    driver: bridge
-
+  db:
