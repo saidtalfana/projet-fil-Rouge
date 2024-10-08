@@ -3,10 +3,8 @@ package com.pro_servises.pro.controller;
 import com.pro_servises.pro.dto.ProductDto;
 import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.enums.ProductStatus;
-import com.pro_servises.pro.mapper.ProductMapper;
 import com.pro_servises.pro.model.Product;
 import com.pro_servises.pro.serviceImp.ProductServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,43 +14,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
 
-    @Autowired
-    private ProductServiceImp productServiceImp;
+    private final ProductServiceImp productServiceImp;
 
-    public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/images";
+    public ProductController(ProductServiceImp productServiceImp) {
+        this.productServiceImp = productServiceImp;
+    }
 
-
-//    @PostMapping("/add_product")
-//    public ResponseEntity<ProductDto> addProduct(@ModelAttribute ProductDto productDto,
-//                                                 @RequestParam Integer enterprise_id,
-//                                                 @RequestPart("file")MultipartFile file
-//                                          ) throws IOException {
-//
-//
-//
-//
-//      ProductDto createdProduct=  productServiceImp.addProductDto(productDto, enterprise_id);
-//        return ResponseEntity.ok(createdProduct);
-//    }
-
-//    @PostMapping("/add_product")
-//    public ResponseEntity<ProductDto> addProduct(@ModelAttribute ProductDto productDto,
-//                                                 @RequestParam Integer enterprise_id,
-//                                                 @RequestParam("image") MultipartFile imageFile) throws IOException {
-//        // Convert the file to bytes and set it in the ProductDto if needed
-//        byte[] imageBytes = imageFile.getBytes();
-//        // Save the product using the service
-//
-//        ProductDto createdProduct = productServiceImp.addProductDto(productDto, enterprise_id,imageBytes);
-//
-//        return ResponseEntity.ok(createdProduct);
-//    }
 
     @PostMapping("/add_product")
     public ResponseEntity<ProductDto> addProduct(
@@ -61,11 +35,10 @@ public class ProductController {
             @RequestParam Double price,
             @RequestParam Category category,
             @RequestParam ProductStatus  productStatus,
-            @RequestParam Integer enterprise_id,
+            @RequestParam Integer enterpriseId,
             @RequestPart("image") MultipartFile imageFile) throws IOException {
 
-        // Log the file size
-        System.out.println("Uploaded file size: " + imageFile.getSize());
+
 
         // Convert the image file to bytes
         byte[] imageBytes = imageFile.getBytes();
@@ -80,7 +53,7 @@ public class ProductController {
                 .build();
 
         // Call the service to save the product
-        ProductDto createdProduct = productServiceImp.addProductDto(productDto, enterprise_id, imageBytes);
+        ProductDto createdProduct = productServiceImp.addProductDto(productDto, enterpriseId, imageBytes);
 
         // Return the created product DTO
         return ResponseEntity.ok(createdProduct);
@@ -100,8 +73,8 @@ public class ProductController {
 
 
     @GetMapping("/get_products_by_enterprise_id")
-    public List<ProductDto> getProductsByProviderId(@RequestParam Integer enterprise_id) {
-        return productServiceImp.getAllProductsByEnterpriseId(enterprise_id);
+    public List<ProductDto> getProductsByProviderId(@RequestParam Integer enterpriseId) {
+        return productServiceImp.getAllProductsByEnterpriseId(enterpriseId);
     }
 
 
@@ -121,15 +94,6 @@ public class ProductController {
     public List<ProductDto> getAllProduct() {
         return productServiceImp.getAllProduct();
     }
-
-//    @GetMapping("/search")
-//    List<Product> getProductBySearch( @RequestParam(required = false) Float price,
-//                                         @RequestParam(required = false) String name,
-//                                         @RequestParam(required = false) String category) {
-//        return productServiceImp.searchProducts( price,name,category);
-//    }
-
-
 
     @GetMapping("/pagination")
     public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,
@@ -163,4 +127,15 @@ public class ProductController {
     public List<Product> getProductsWithOrders() {
         return productServiceImp.getProductsWithOrders();
     }
+
+    @GetMapping("/count/status/{enterpriseId}")
+    public Map<String, Long> getProductsCountByStatus(@PathVariable Integer enterpriseId) {
+        return productServiceImp.countProductsByStatus(enterpriseId);
+    }
+
+    @GetMapping("/average-stars/{productId}")
+    public Double getAverageStars(@PathVariable Integer productId) {
+        return productServiceImp.getAverageStarsForProduct(productId);
+    }
+
 }

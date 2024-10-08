@@ -7,17 +7,20 @@ import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService {
-    @Autowired
-    private PersonRepository personRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PersonRepository personRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+        this.personRepository = personRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     public Person findByUserName(String username){

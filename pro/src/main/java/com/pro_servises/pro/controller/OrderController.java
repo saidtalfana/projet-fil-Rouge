@@ -1,10 +1,7 @@
 package com.pro_servises.pro.controller;
 
 import com.pro_servises.pro.dto.OrderDto;
-import com.pro_servises.pro.model.Order;
-import com.pro_servises.pro.service.OrderService;
 import com.pro_servises.pro.serviceImp.OrderServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,36 +12,39 @@ import java.util.List;
 public class OrderController {
 
 
-    @Autowired
-    private OrderServiceImpl orderServiceImpl;
+    private final OrderServiceImpl orderServiceImpl;
+
+    public OrderController(OrderServiceImpl orderServiceImpl) {
+        this.orderServiceImpl = orderServiceImpl;
+    }
 
     @PostMapping("/add_order")
-    public OrderDto addOrder(@RequestBody OrderDto orderdto, @RequestParam Integer product_id , @RequestParam Integer user_id) {
-        return orderServiceImpl.addOrder(orderdto,product_id, user_id);
+    public OrderDto addOrder(@RequestBody OrderDto orderdto, @RequestParam Integer productId , @RequestParam Integer userId) {
+        return orderServiceImpl.addOrder(orderdto,productId, userId);
     }
 
-    @DeleteMapping("/delete_order/{order_id}")
-    public void deleteOrder(@PathVariable("order_id") Integer order_id) {
-        orderServiceImpl.deleteOrderById(order_id);
+    @DeleteMapping("/delete_order/{orderId}")
+    public void deleteOrder(@PathVariable("orderId") Integer orderId) {
+        orderServiceImpl.deleteOrderById(orderId);
     }
 
-    @GetMapping("/get_order/{order_id}")
-    public OrderDto getOrder(@PathVariable("order_id") Integer order_id) {
-        return orderServiceImpl.getOrderById(order_id);
+    @GetMapping("/get_order/{orderId}")
+    public OrderDto getOrder(@PathVariable("orderId") Integer orderId) {
+        return orderServiceImpl.getOrderById(orderId);
     }
-    @GetMapping("/gets_order_by_user_id/{user_id}")
-    public List<OrderDto> getOrderByUserId(@PathVariable Integer user_id) {
-        return orderServiceImpl.getAllOrdersByUserId(user_id);
-    }
-
-    @GetMapping("/gets_order_by_product_id/{product_id}")
-    public List<OrderDto> getOrderByProductId(@PathVariable Integer product_id) {
-        return orderServiceImpl.getAllOrdersByProductId(product_id);
+    @GetMapping("/gets_order_by_user_id/{userId}")
+    public List<OrderDto> getOrderByUserId(@PathVariable Integer userId) {
+        return orderServiceImpl.getAllOrdersByUserId(userId);
     }
 
-    @GetMapping("/get_all_order_by_enterprise_id/{enterprise_id}")
-    public List<OrderDto> getAllOrderByEnterpriseId(@PathVariable Integer enterprise_id) {
-        return orderServiceImpl.getAllOrdersByEnterpriseId(enterprise_id);
+    @GetMapping("/gets_order_by_product_id/{productId}")
+    public List<OrderDto> getOrderByProductId(@PathVariable Integer productId) {
+        return orderServiceImpl.getAllOrdersByProductId(productId);
+    }
+
+    @GetMapping("/get_all_order_by_enterprise_id/{enterpriseId}")
+    public List<OrderDto> getAllOrderByEnterpriseId(@PathVariable Integer enterpriseId) {
+        return orderServiceImpl.getAllOrdersByEnterpriseId(enterpriseId);
     }
     @GetMapping("/get_all_orders")
     public List<OrderDto> getAllOrders() {
@@ -71,6 +71,11 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
+
+    @GetMapping("/count/{enterpriseId}")
+    public List<Object[]> getProductOrdersCount(@PathVariable Long enterpriseId) {
+        return orderServiceImpl.getProductOrdersCountByEnterpriseId(enterpriseId);
+    }
 
 
 }

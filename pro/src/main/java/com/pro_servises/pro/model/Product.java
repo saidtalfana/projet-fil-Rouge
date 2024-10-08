@@ -12,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,9 +38,7 @@ public class Product {
     private byte[] image;
 
 
-    @OneToMany(mappedBy = "product")
-    @JsonManagedReference
-    private Set<Order> order;
+
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
@@ -51,8 +47,16 @@ public class Product {
     private Enterprise enterprise;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
-    private Set<Rating> rating = new HashSet<>();
+    @JsonManagedReference(value = "productOrders") // Ensure this matches the Order side
+    private Set<Order> orders = new HashSet<>();
+
+//    @OneToMany(mappedBy = "product")
+//    @JsonManagedReference(value = "productRatings") // Ensure this corresponds to the Rating class
+//    private Set<Rating> ratings = new HashSet<>();
+
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference(value = "productRatings")
+    private Set<Rating> ratings = new HashSet<>();
 
 
 

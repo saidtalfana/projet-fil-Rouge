@@ -1,19 +1,12 @@
 package com.pro_servises.pro.serviceImp;
 
 import com.pro_servises.pro.dto.ArticleDto;
-import com.pro_servises.pro.exception.ConflictException;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.ArticleMapper;
-import com.pro_servises.pro.model.Admin;
 import com.pro_servises.pro.model.Article;
-import com.pro_servises.pro.model.Product;
-import com.pro_servises.pro.model.Provider;
-import com.pro_servises.pro.repository.AdminRepository;
 import com.pro_servises.pro.repository.ArticleRepository;
 import com.pro_servises.pro.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +14,13 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private ArticleMapper articleMapper;
-    @Autowired
-    private AdminRepository adminRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
+
+    public ArticleServiceImpl(ArticleMapper articleMapper, ArticleRepository articleRepository) {
+        this.articleMapper = articleMapper;
+        this.articleRepository = articleRepository;
+    }
 
 
     @Override
@@ -40,9 +34,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         @Override
-        public ArticleDto getArticleById (Integer article_id){
-            Article article1 = articleRepository.findById(article_id).orElseThrow(
-                    () -> new NotFoundException("id " + article_id + " not found"));
+        public ArticleDto getArticleById (Integer articleId){
+            Article article1 = articleRepository.findById(articleId).orElseThrow(
+                    () -> new NotFoundException("id " + articleId + " not found"));
             return articleMapper.mapToArticleDto(article1);
         }
 
@@ -56,8 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         @Override
-        public void deleteArticleById (Integer article_id){
-            articleRepository.deleteById(article_id);
+        public void deleteArticleById (Integer articleId){
+            articleRepository.deleteById(articleId);
         }
 
 

@@ -1,12 +1,14 @@
 package com.pro_servises.pro.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RatingDto {
 
-
-    public Integer ratingId;
     private int stars;
     private String comment;
 }

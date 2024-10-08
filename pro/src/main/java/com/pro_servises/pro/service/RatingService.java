@@ -4,7 +4,7 @@ import com.pro_servises.pro.model.Rating;
 
 public interface RatingService {
 
-    Rating addRating(Rating rating,Integer product_id , Integer user_id);
+    Rating addRating(Rating rating,Integer productId , Integer userId);
 
     Rating updateRating(Rating rating,Integer id);
 

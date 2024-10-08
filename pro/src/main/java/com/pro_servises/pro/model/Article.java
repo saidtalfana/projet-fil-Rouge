@@ -18,10 +18,15 @@ public class Article {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Integer articleId;
+    @Column(length = 1000)
     private String articleTitle;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String articleContent;
+    @Column(length = 1000)
     private String articleAuthor;
     private Date articleDate;
+    @Column(length = 1000)
     private String articleType;
 
     @Lob
@@ -29,7 +34,4 @@ public class Article {
     private byte[] articleImage;
 
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
 }

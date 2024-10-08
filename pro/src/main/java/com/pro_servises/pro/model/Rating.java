@@ -1,7 +1,9 @@
 package com.pro_servises.pro.model;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,20 +17,35 @@ import lombok.Setter;
 public class Rating {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
-    public Integer ratingId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer ratingId;
+
+    @Min(1)
+    @Max(5)
     private int stars;
+
     private String comment;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    public Product product;
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    @JsonBackReference(value = "productReference") // Unique reference name
+//    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    public User user;
+    @JsonBackReference(value = "userReference") // Unique reference name
+    private User user;
 
 //    @ManyToOne
-//    @JoinColumn(name = "order_id")
-//    private Order order;
+//    @JoinColumn(name = "product_id")
+//    @JsonBackReference(value = "productRatings") // Ensure this matches the Product side
+//    private Product product;
+
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    @JsonBackReference(value = "productRatings")
+    private Product product;
+
+
 }

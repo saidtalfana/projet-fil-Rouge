@@ -1,5 +1,6 @@
 package com.pro_servises.pro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pro_servises.pro.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -10,8 +11,6 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Set;
-
 
 @Setter
 @Getter
@@ -35,12 +34,12 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonIgnore
+    @JsonBackReference(value = "productOrders") // This should match the Product entity
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
+    @JsonBackReference(value = "userOrders") // Create a unique reference name for user if necessary
     private User user;
 
 }

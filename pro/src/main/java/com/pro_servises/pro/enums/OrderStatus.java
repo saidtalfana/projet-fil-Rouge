@@ -1,6 +1,6 @@
 package com.pro_servises.pro.enums;
 
 public enum OrderStatus {
-    done,
-    pending,
+    DONE,
+    PENDING
 }

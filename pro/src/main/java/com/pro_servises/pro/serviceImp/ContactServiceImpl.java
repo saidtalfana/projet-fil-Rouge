@@ -5,7 +5,6 @@ import com.pro_servises.pro.mapper.ContactMapper;
 import com.pro_servises.pro.model.Contact;
 import com.pro_servises.pro.repository.ContactRepository;
 import com.pro_servises.pro.service.ContactService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -16,10 +15,13 @@ import java.util.stream.Collectors;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    @Autowired
-    private ContactRepository contactRepository;
-    @Autowired
-    private ContactMapper contactMapper;
+    private final ContactRepository contactRepository;
+    private final ContactMapper contactMapper;
+
+    public ContactServiceImpl(ContactRepository contactRepository, ContactMapper contactMapper) {
+        this.contactRepository = contactRepository;
+        this.contactMapper = contactMapper;
+    }
 
     @Override
     public ContactDto addContact(ContactDto contactDto) {

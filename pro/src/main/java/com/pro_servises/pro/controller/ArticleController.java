@@ -45,9 +45,9 @@ public class ArticleController {
 
 
 
-    @GetMapping("/get_article/{article_id}")
-    public ArticleDto getArticle(@PathVariable Integer article_id) {
-        return articleServiceImpl.getArticleById(article_id);
+    @GetMapping("/get_article/{articleId}")
+    public ArticleDto getArticle(@PathVariable Integer articleId) {
+        return articleServiceImpl.getArticleById(articleId);
     }
 
 
@@ -59,9 +59,9 @@ public class ArticleController {
 
 
 
-    @DeleteMapping("/delete_article/{article_id}")
-    public void deleteArticle(@PathVariable Integer article_id) {
-        articleServiceImpl.deleteArticleById(article_id);
+    @DeleteMapping("/delete_article/{articleId}")
+    public void deleteArticle(@PathVariable Integer articleId) {
+        articleServiceImpl.deleteArticleById(articleId);
     }
 
 

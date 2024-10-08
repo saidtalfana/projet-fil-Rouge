@@ -1,7 +1,6 @@
 package com.pro_servises.pro.dto;
 
 import lombok.Data;
-
 import java.sql.Date;
 import java.sql.Time;
 

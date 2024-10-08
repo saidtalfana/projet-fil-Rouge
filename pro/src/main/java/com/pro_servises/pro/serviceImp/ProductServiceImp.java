@@ -1,49 +1,48 @@
 package com.pro_servises.pro.serviceImp;
 
 import com.pro_servises.pro.Specification.ProductSpecification;
-import com.pro_servises.pro.dto.OrderDto;
 import com.pro_servises.pro.dto.ProductDto;
 import com.pro_servises.pro.enums.Category;
+import com.pro_servises.pro.enums.ProductStatus;
 import com.pro_servises.pro.exception.ConflictException;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.ProductMapper;
 import com.pro_servises.pro.model.Enterprise;
 import com.pro_servises.pro.model.Product;
-import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.repository.EntepriseRepository;
 import com.pro_servises.pro.repository.ProductRepository;
-import com.pro_servises.pro.repository.ProviderRepository;
 import com.pro_servises.pro.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService{
 
-    @Autowired
-          private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private EntepriseRepository entepriseRepository;
+    private final EntepriseRepository entepriseRepository;
 
-    @Autowired
-           private ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
-
+    public ProductServiceImp(ProductRepository productRepository, EntepriseRepository entepriseRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.entepriseRepository = entepriseRepository;
+        this.productMapper = productMapper;
+    }
 
 
     @Override
-    public ProductDto addProductDto(ProductDto productDto, Integer enterprise_id , byte[] imageBytes) {
+    public ProductDto addProductDto(ProductDto productDto, Integer enterpriseId , byte[] imageBytes) {
         Product product = productMapper.mapToProduct(productDto);
-        Enterprise enterprise = entepriseRepository.findById(enterprise_id).orElseThrow(
-                () -> new NotFoundException("id "+ enterprise_id + " not found"));
+        Enterprise enterprise = entepriseRepository.findById(enterpriseId).orElseThrow(
+                () -> new NotFoundException("id "+ enterpriseId + " not found"));
                   if (productRepository.findByName(productDto.getName()) != null) {
                          throw new ConflictException("Another record with the same title exists");}
 
@@ -55,16 +54,16 @@ public class ProductServiceImp implements ProductService{
 
 
     @Override
-    public ProductDto getProductById(Integer product_id) {
-        Product product = productRepository.findById(product_id).orElseThrow(
-                () -> new NotFoundException("id "+ product_id + " not found"));
+    public ProductDto getProductById(Integer productId) {
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new NotFoundException("id "+ productId + " not found"));
         return productMapper.mapToProductDto(product);
     }
 
 
     @Override
-    public List<ProductDto> getAllProductsByEnterpriseId(Integer enterprise_id){
-        List<Product> products = productRepository.findAllProductsByEnterpriseId(enterprise_id);
+    public List<ProductDto> getAllProductsByEnterpriseId(Integer enterpriseId){
+        List<Product> products = productRepository.findAllProductsByEnterpriseId(enterpriseId);
         return products.stream()
                 .map(productMapper::mapToProductDto)
                 .collect(Collectors.toList());
@@ -123,5 +122,23 @@ public class ProductServiceImp implements ProductService{
 
     public List<Product> getProductsWithOrders() {
         return productRepository.findProductsWithOrders();
+    }
+
+    public Map<String, Long> countProductsByStatus(Integer enterpriseId) {
+        List<Object[]> results = productRepository.countProductsByStatus(enterpriseId);
+        Map<String, Long> statusCountMap = new HashMap<>();
+
+        for (Object[] result : results) {
+            // Assume the first element is the status and the second is the count
+            String status = ((ProductStatus) result[0]).name(); // Convert enum to String
+            Long count = ((Number) result[1]).longValue();
+            statusCountMap.put(status, count);
+        }
+
+        return statusCountMap;
+    }
+
+    public Double getAverageStarsForProduct(Integer productId) {
+        return productRepository.getAverageStarsForProduct(productId);
     }
 }

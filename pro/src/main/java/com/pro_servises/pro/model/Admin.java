@@ -3,7 +3,7 @@ package com.pro_servises.pro.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +19,6 @@ public class Admin extends Person {
 
 
     @OneToMany(mappedBy = "admin")
+    @Transient
     private Set<Article> articles;
 }

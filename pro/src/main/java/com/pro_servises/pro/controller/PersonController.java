@@ -7,7 +7,6 @@ import com.pro_servises.pro.dto.SignupRequest;
 import com.pro_servises.pro.enums.Role;
 import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.serviceImp.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +22,14 @@ import java.util.Map;
 public class PersonController {
 
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    public PersonController(AuthenticationManager authenticationManager, PersonService personService) {
+        this.authenticationManager = authenticationManager;
+        this.personService = personService;
+    }
 
     @GetMapping("/salam")
    public String one(){

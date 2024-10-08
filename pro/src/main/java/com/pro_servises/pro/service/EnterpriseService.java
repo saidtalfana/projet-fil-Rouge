@@ -5,9 +5,9 @@ import com.pro_servises.pro.dto.EnterpriseDto;
 public interface EnterpriseService {
 
 
-    EnterpriseDto addEnterprise(EnterpriseDto enterpriseDto, Integer provider_id);
+    EnterpriseDto addEnterprise(EnterpriseDto enterpriseDto, Integer providerId);
 
-    EnterpriseDto getEnterpriseById(Integer provider_id);
+    EnterpriseDto getEnterpriseById(Integer providerId);
 
     EnterpriseDto updateEnterprise(EnterpriseDto enterpriseDto);
 

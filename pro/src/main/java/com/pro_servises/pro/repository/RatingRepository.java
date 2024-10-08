@@ -11,5 +11,6 @@ import java.util.List;
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query(value = "SELECT * FROM Rating where product_id = ?1" , nativeQuery = true)
-    List<Rating> findByProductId(Integer productId);
+    List<Rating> findByProduct_ProductId(Integer productId);
+
 }

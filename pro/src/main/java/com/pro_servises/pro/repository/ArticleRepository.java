@@ -11,5 +11,5 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query(value = "SELECT *  FROM Article WHERE admin_id =?1" , nativeQuery = true)
-    List<Article> findAllArticleByAdmin(Integer admin_id);
+    List<Article> findAllArticleByAdmin(Integer adminId);
 }

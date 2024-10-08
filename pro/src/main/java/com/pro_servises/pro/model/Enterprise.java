@@ -1,7 +1,6 @@
 package com.pro_servises.pro.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pro_servises.pro.enums.Activity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +22,7 @@ public class Enterprise {
     private String enterpriseName;
     private String enterpriseDescription;
     private String enterpriseLogo;
-    private Activity activity;
+    private String activity;
     private String phoneNumber;
     private String email;
 

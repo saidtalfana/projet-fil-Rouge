@@ -4,9 +4,6 @@ import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.enums.ProductStatus;
 import jakarta.persistence.Transient;
 import lombok.*;
-
-import java.util.Base64;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -24,9 +21,4 @@ public class ProductDto {
     @Transient
     private byte[] image; // This field will not be persisted
 
-    public String getImageAsBase64() {
-        return image != null ? Base64.getEncoder().encodeToString(image) : null;
-    }
-
-    // Getters and setters...
 }

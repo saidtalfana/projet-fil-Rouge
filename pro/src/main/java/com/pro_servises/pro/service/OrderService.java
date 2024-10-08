@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface OrderService {
 
-    OrderDto addOrder(OrderDto orderDto, Integer product_id , Integer user_id);
+    OrderDto addOrder(OrderDto orderDto, Integer productId , Integer userId);
 
-    void deleteOrderById(Integer order_id);
+    void deleteOrderById(Integer orderId);
 
-    OrderDto getOrderById(Integer order_id);
+    OrderDto getOrderById(Integer orderId);
 
-    List<OrderDto> getAllOrdersByUserId(Integer user_id);
+    List<OrderDto> getAllOrdersByUserId(Integer userId);
 
-    List<OrderDto> getAllOrdersByProductId(Integer product_id);
+    List<OrderDto> getAllOrdersByProductId(Integer productId);
 
-     List<OrderDto> getAllOrdersByEnterpriseId(Integer enterprise_id);
+     List<OrderDto> getAllOrdersByEnterpriseId(Integer enterpriseId);
 
     List<OrderDto> getAllOrders();
 

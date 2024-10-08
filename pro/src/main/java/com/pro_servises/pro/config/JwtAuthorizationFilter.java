@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 import static com.pro_servises.pro.config.JwtAuth.SECRET_KEY;
@@ -33,7 +32,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String jwt = authorizationToken.substring(7);
                 Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwt).getBody();
                 String username = claims.getSubject();
-                System.out.println("youssef");
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

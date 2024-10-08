@@ -1,7 +1,6 @@
 package com.pro_servises.pro.mapper;
 
-import com.pro_servises.pro.dto.OrderDto;
-import com.pro_servises.pro.dto.ProductDto;
+
 import com.pro_servises.pro.dto.RatingDto;
 import com.pro_servises.pro.model.Order;
 import com.pro_servises.pro.model.Rating;

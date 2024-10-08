@@ -3,6 +3,6 @@ package com.pro_servises.pro.enums;
 public enum ProductStatus {
     AVAILABLE,
     COMING_SOON,
-    NOT_AVAILABLE
+    OUT_OF_STOCK
 
 }

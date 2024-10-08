@@ -11,7 +11,6 @@ import com.pro_servises.pro.repository.OrderRepository;
 import com.pro_servises.pro.repository.ProductRepository;
 import com.pro_servises.pro.repository.UserRepository;
 import com.pro_servises.pro.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -22,30 +21,31 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
 
-    @Autowired
-    private EmailServic emailService;
+
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.orderMapper = orderMapper;
+    }
 
     @Override
-   public OrderDto addOrder(OrderDto orderDto, Integer product_id , Integer user_id) {
+   public OrderDto addOrder(OrderDto orderDto, Integer productId , Integer userId) {
         Order order = orderMapper.mapToOrder(orderDto);
-        Product product = productRepository.findById(product_id).orElseThrow(
-                () -> new NotFoundException("id " + product_id + " not found"));
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new NotFoundException("id " + productId + " not found"));
         order.setProduct(product);
-        order.setOrderStatus(OrderStatus.pending);
+        order.setOrderStatus(OrderStatus.PENDING);
 
-        User user = userRepository.findById(user_id).orElseThrow(
-                () -> new NotFoundException("id " + user_id + " not found"));
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("id " + userId + " not found"));
 
         order.setUser(user);
         order.setOrderDate(new Date(System.currentTimeMillis()));
@@ -56,37 +56,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-   public void deleteOrderById(Integer order_id) {
-        orderRepository.deleteById(order_id);
+   public void deleteOrderById(Integer orderId) {
+        orderRepository.deleteById(orderId);
     }
 
     @Override
-   public OrderDto getOrderById(Integer order_id) {
-        Order order = orderRepository.findById(order_id).orElseThrow(
-                () -> new NotFoundException("id " + order_id + " not found"));
+   public OrderDto getOrderById(Integer orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new NotFoundException("id " + orderId + " not found"));
         return orderMapper.mapToOrderDto(order);
     }
 
     @Override
-   public List<OrderDto> getAllOrdersByUserId(Integer user_id) {
-        List<Order> orders = orderRepository.getAllOrdersByUserId(user_id);
-        System.out.println(orders);
+   public List<OrderDto> getAllOrdersByUserId(Integer userId) {
+        List<Order> orders = orderRepository.getAllOrdersByUserId(userId);
         return orders.stream()
                 .map(orderMapper::mapToOrderDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<OrderDto> getAllOrdersByProductId(Integer product_id) {
-        List<Order> orders = orderRepository.getAllOrdersByProductId(product_id);
-        System.out.println(orders);
+    public List<OrderDto> getAllOrdersByProductId(Integer productId) {
+        List<Order> orders = orderRepository.getAllOrdersByProductId(productId);
         return orders.stream()
                 .map(orderMapper::mapToOrderDto)
                 .collect(Collectors.toList());
     }
     @Override
-    public List<OrderDto> getAllOrdersByEnterpriseId(Integer enterprise_id) {
-        List<Order> orders = orderRepository.getAllOrdersByEnterpriseId(enterprise_id);
+    public List<OrderDto> getAllOrdersByEnterpriseId(Integer enterpriseId) {
+        List<Order> orders = orderRepository.getAllOrdersByEnterpriseId(enterpriseId);
 
         return orders.stream()
                 .map(orderMapper::mapToOrderDto)
@@ -108,11 +106,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
 
         // Update order status
-        order.setOrderStatus(OrderStatus.done);
+        order.setOrderStatus(OrderStatus.DONE);
         orderRepository.save(order);
 
-        // Send email to the customer asking for rating and comments
-        emailService.sendRatingPrompt(order.getUser().getEmail(), order.getProduct().getName());
+    }
+
+    public List<Object[]> getProductOrdersCountByEnterpriseId(Long enterpriseId) {
+        return orderRepository.findProductOrdersCountByEnterpriseId(enterpriseId);
     }
     }
 

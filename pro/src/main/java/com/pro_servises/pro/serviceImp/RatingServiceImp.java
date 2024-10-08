@@ -8,7 +8,6 @@ import com.pro_servises.pro.repository.ProductRepository;
 import com.pro_servises.pro.repository.RatingRepository;
 import com.pro_servises.pro.repository.UserRepository;
 import com.pro_servises.pro.service.RatingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,39 +15,31 @@ import java.util.List;
 @Service
 public class RatingServiceImp implements RatingService {
 
+    private final RatingRepository ratingRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-
-    @Autowired
-    private RatingRepository ratingRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-
-
-    public Rating addRat(Rating rating) {
-        return ratingRepository.save(rating);
+    public RatingServiceImp(RatingRepository ratingRepository, ProductRepository productRepository, UserRepository userRepository) {
+        this.ratingRepository = ratingRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
-
-    public List<Rating> getRatingsByProductId(Integer productId) {
-        return ratingRepository.findByProductId(productId);
-    }
-
-
 
     @Override
-    public Rating addRating(Rating rating, Integer product_id, Integer user_id) {
-        Product product = productRepository.findById(product_id)
-                .orElseThrow(() -> new NotFoundException("Product id " + product_id + " not found"));
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new NotFoundException("User id " + user_id + " not found"));
+    public Rating addRating(Rating rating, Integer productId, Integer userId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product id " + productId + " not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User id " + userId + " not found"));
 
         rating.setProduct(product);
         rating.setUser(user);
 
         return ratingRepository.save(rating);
+    }
+
+    public List<Rating> getRatingsByProductId(Integer productId) {
+        return ratingRepository.findByProduct_ProductId(productId);
     }
 
     @Override
@@ -63,5 +54,10 @@ public class RatingServiceImp implements RatingService {
     }
 
 
-
+    public void deleteRating(Integer id) {
+        if (!ratingRepository.existsById(id)) {
+            throw new NotFoundException("Rating id " + id + " not found");
+        }
+        ratingRepository.deleteById(id);
+    }
 }

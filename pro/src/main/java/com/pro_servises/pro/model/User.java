@@ -1,5 +1,6 @@
 package com.pro_servises.pro.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -16,14 +17,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @DiscriminatorValue("USER")
-public class User extends Person{
-
-
+public class User extends Person {
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
     @OneToMany(mappedBy = "user")
     private Set<Rating> ratings;
-
 }

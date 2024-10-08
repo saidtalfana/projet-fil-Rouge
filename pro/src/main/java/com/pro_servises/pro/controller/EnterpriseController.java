@@ -4,26 +4,29 @@ import com.pro_servises.pro.dto.EnterpriseDto;
 import com.pro_servises.pro.model.Enterprise;
 import com.pro_servises.pro.serviceImp.EnterpriseServiceImp;
 import com.pro_servises.pro.serviceImp.ProductServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/enterprise")
 public class EnterpriseController {
-@Autowired
-private EnterpriseServiceImp enterpriseServiceImp;
-    @Autowired
-    private ProductServiceImp productServiceImp;
+
+   private final EnterpriseServiceImp enterpriseServiceImp;
+   private final ProductServiceImp productServiceImp;
+
+    public EnterpriseController(EnterpriseServiceImp enterpriseServiceImp, ProductServiceImp productServiceImp) {
+        this.enterpriseServiceImp = enterpriseServiceImp;
+        this.productServiceImp = productServiceImp;
+    }
 
 
     @PostMapping("/add_enterprise")
- EnterpriseDto addEnterprise(@RequestBody EnterpriseDto enterpriseDto,@RequestParam Integer provider_id){
-        return enterpriseServiceImp.addEnterprise(enterpriseDto, provider_id);
+ EnterpriseDto addEnterprise(@RequestBody EnterpriseDto enterpriseDto,@RequestParam Integer providerId){
+        return enterpriseServiceImp.addEnterprise(enterpriseDto, providerId);
     }
 
- @GetMapping("/get_enterprise/{provider_id}")
-    EnterpriseDto getEnterpriseById(@PathVariable Integer provider_id){
-     return enterpriseServiceImp.getEnterpriseById(provider_id);
+ @GetMapping("/get_enterprise/{providerId}")
+    EnterpriseDto getEnterpriseById(@PathVariable Integer providerId){
+     return enterpriseServiceImp.getEnterpriseById(providerId);
  }
 
  @PutMapping("/update_enterprise")
@@ -31,8 +34,8 @@ private EnterpriseServiceImp enterpriseServiceImp;
      return enterpriseServiceImp.updateEnterprise(enterpriseDto);
     }
     @GetMapping("/get_enterprise")
-    EnterpriseDto getEnterprise(@RequestParam Integer enterprise_id){
-     return enterpriseServiceImp.getEnterprise(enterprise_id);
+    EnterpriseDto getEnterprise(@RequestParam Integer enterpriseId){
+     return enterpriseServiceImp.getEnterprise(enterpriseId);
     }
 
 
