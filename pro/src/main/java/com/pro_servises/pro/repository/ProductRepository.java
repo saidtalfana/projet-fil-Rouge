@@ -25,7 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
 
     @Query("SELECT p FROM Product p WHERE p.category = :category AND p.price = :price")
     List<Product> findByCategoryAndPrice(@Param("category") Category category, @Param("price") Double price);
-
     @Query(value = "SELECT COUNT(*) FROM Product WHERE enterprise_id = ?1", nativeQuery = true)
     long countProductsByEnterprise(Long enterpriseId);
 
