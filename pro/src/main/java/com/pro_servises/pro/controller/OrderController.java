@@ -1,5 +1,6 @@
 package com.pro_servises.pro.controller;
 
+import com.pro_servises.pro.dto.CommandDTO;
 import com.pro_servises.pro.dto.OrderDto;
 import com.pro_servises.pro.serviceImp.OrderServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -51,17 +52,6 @@ public class OrderController {
         return orderServiceImpl.getAllOrders();
     }
 
-
-
-
-
-
-
-
-
-
-
-
         @PutMapping("/update-status/{orderId}")
         public ResponseEntity<String> updateOrderStatusToDone(@PathVariable Integer orderId) {
             try {
@@ -77,5 +67,9 @@ public class OrderController {
         return orderServiceImpl.getProductOrdersCountByEnterpriseId(enterpriseId);
     }
 
-
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CommandDTO>> getUserOrders(@PathVariable Integer userId) {
+        List<CommandDTO> orders = orderServiceImpl.getUserOrders(userId);
+        return ResponseEntity.ok(orders); // Retourne la liste des commandes dans la réponse
+    }
 }

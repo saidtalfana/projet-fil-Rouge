@@ -1,5 +1,6 @@
 package com.pro_servises.pro.serviceImp;
 
+import com.pro_servises.pro.dto.CommandDTO;
 import com.pro_servises.pro.dto.OrderDto;
 import com.pro_servises.pro.enums.OrderStatus;
 import com.pro_servises.pro.exception.NotFoundException;
@@ -114,7 +115,29 @@ public class OrderServiceImpl implements OrderService {
     public List<Object[]> getProductOrdersCountByEnterpriseId(Long enterpriseId) {
         return orderRepository.findProductOrdersCountByEnterpriseId(enterpriseId);
     }
+
+
+
+    public List<CommandDTO> getUserOrders(Integer userId) {
+        List<Order> orders = orderRepository.findOrderByUserId(userId); // Récupérer les commandes de l'utilisateur
+        return orders.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
+
+    private CommandDTO convertToDTO(Order order) {
+        // Vérifiez que le produit n'est pas nul
+        Product product = order.getProduct(); // Récupérer le produit depuis la commande
+
+        return new CommandDTO(
+                order.getOrderId() != null ? order.getOrderId().toString() : null, // ID de la commande converti en String
+                product != null ? product.getName() : null, // Nom du produit
+                product != null ? product.getPrice() : null, // Prix du produit
+                order.getOrderDate() != null ? order.getOrderDate().toString() : null, // Date de la commande
+                order.getAddress(), // Adresse de livraison
+                order.getEmail()    // Email du client
+        );
+    }
+
+}
 
 
 

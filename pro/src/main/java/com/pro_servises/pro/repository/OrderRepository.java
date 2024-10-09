@@ -32,4 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "GROUP BY p.name")
     List<Object[]> findProductOrdersCountByEnterpriseId(Long enterpriseId);
 
+
+    List<Order> findOrderByUserId(Integer userId);
+
 }
