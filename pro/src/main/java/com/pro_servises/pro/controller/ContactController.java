@@ -15,13 +15,24 @@ public class ContactController {
         this.contactServiceImpl = contactServiceImpl;
     }
 
+    /**
+     * Add a new contact
+     *
+     * @param contactDto the contact data to be added
+     * @return the created ContactDto object
+     */
     @PostMapping("/add_contact")
-    ContactDto addContact(@RequestBody ContactDto contactDto) {
+    public ContactDto addContact(@RequestBody ContactDto contactDto) {
         return contactServiceImpl.addContact(contactDto);
     }
 
+    /**
+     * Get a list of all contacts
+     *
+     * @return a list of ContactDto objects
+     */
     @GetMapping("/get_all_contact")
-    List<ContactDto> getAllContact() {
+    public List<ContactDto> getAllContact() {
         return contactServiceImpl.getAllContacts();
     }
 }

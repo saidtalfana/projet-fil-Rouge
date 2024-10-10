@@ -30,7 +30,6 @@ public class Order {
     private String email;
     private String phoneNumber;
     private String customerRequest;
-    private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -20,6 +20,12 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    /**
+     * Generate a PDF report of products for a specific enterprise.
+     *
+     * @param enterpriseId the ID of the enterprise for which to generate the report
+     * @return a ResponseEntity containing the PDF report as a byte array, or an error response if generation fails
+     */
     @GetMapping("/products/{enterpriseId}")
     public ResponseEntity<byte[]> generateReport(@PathVariable Long enterpriseId) {
         try {

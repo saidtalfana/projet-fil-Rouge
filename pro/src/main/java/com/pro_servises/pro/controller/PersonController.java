@@ -1,6 +1,5 @@
 package com.pro_servises.pro.controller;
 
-
 import com.pro_servises.pro.config.JwtAuth;
 import com.pro_servises.pro.dto.LoginRequest;
 import com.pro_servises.pro.dto.SignupRequest;
@@ -21,9 +20,7 @@ import java.util.Map;
 @RestController
 public class PersonController {
 
-
     private final PersonService personService;
-
     private final AuthenticationManager authenticationManager;
 
     public PersonController(AuthenticationManager authenticationManager, PersonService personService) {
@@ -31,17 +28,25 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/salam")
-   public String one(){
-        return "assalam ailaikum";
-    }
-
+    /**
+     * Sign up a new user
+     *
+     * @param role the role of the user (e.g., ADMIN, USER)
+     * @param signUpRequest the sign-up request containing user details
+     * @return the created Person object
+     */
     @PostMapping("/signup")
     public ResponseEntity<Person> signUp(@RequestParam("role") Role role, @RequestBody SignupRequest signUpRequest) {
         Person createPerson = personService.signUp(role, signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createPerson);
     }
 
+    /**
+     * Sign in an existing user
+     *
+     * @param loginRequest the login request containing username and password
+     * @return a ResponseEntity containing a JWT token
+     */
     @PostMapping("/signin")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -51,7 +56,7 @@ public class PersonController {
 
         Person person = personService.findByUserName(loginRequest.getUsername());
 
-        String token = JwtAuth.generateToken(person.getUsername(), person.getRoles(),person.getId());
+        String token = JwtAuth.generateToken(person.getUsername(), person.getRoles(), person.getId());
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
 
