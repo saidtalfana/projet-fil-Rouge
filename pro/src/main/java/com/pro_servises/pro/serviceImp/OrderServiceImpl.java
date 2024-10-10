@@ -43,7 +43,6 @@ public class OrderServiceImpl implements OrderService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new NotFoundException("id " + productId + " not found"));
         order.setProduct(product);
-        order.setOrderStatus(OrderStatus.PENDING);
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("id " + userId + " not found"));
@@ -107,7 +106,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
 
         // Update order status
-        order.setOrderStatus(OrderStatus.DONE);
         orderRepository.save(order);
 
     }
