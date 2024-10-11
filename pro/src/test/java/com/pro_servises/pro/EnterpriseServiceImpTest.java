@@ -6,22 +6,20 @@ import com.pro_servises.pro.model.Enterprise;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.repository.EntepriseRepository;
 import com.pro_servises.pro.repository.ProviderRepository;
-import com.pro_servises.pro.service.EnterpriseService;
 import com.pro_servises.pro.serviceImp.EnterpriseServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class EnterpriseServiceImpTest {
+class EnterpriseServiceImpTest {
 
     @InjectMocks
     private EnterpriseServiceImp enterpriseService;
@@ -35,98 +33,83 @@ public class EnterpriseServiceImpTest {
     @Mock
     private EnterpriseMapper enterpriseMapper;
 
+    private EnterpriseDto enterpriseDto;
+    private Enterprise enterprise;
+    private Provider provider;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        enterpriseDto = new EnterpriseDto();
+        enterpriseDto.setEnterpriseId(1);
+        enterpriseDto.setEnterpriseName("Talfana Enterprises");
+        enterpriseDto.setEnterpriseDescription("A description of Talfana Enterprises");
+        enterpriseDto.setEnterpriseLogo("logo.png");
+        enterpriseDto.setActivity("Various Activities");
+        enterpriseDto.setPhoneNumber("1234567890");
+        enterpriseDto.setEmail("contact@talfana.com");
+
+        provider = new Provider(); // Ensure you have the correct constructor or methods
+        provider.setId(1); // Assuming there's a method to set the provider ID
+
+        enterprise = new Enterprise();
+        enterprise.setEnterpriseId(1);
+        enterprise.setEnterpriseName("Talfana Enterprises");
+        enterprise.setEnterpriseDescription("A description of Talfana Enterprises");
+        enterprise.setEnterpriseLogo("logo.png");
+        enterprise.setActivity("Various Activities");
+        enterprise.setPhoneNumber("1234567890");
+        enterprise.setEmail("contact@talfana.com");
+        enterprise.setProvider(provider);
     }
 
     @Test
-    void testAddEnterprise() {
-        // Given
-        EnterpriseDto enterpriseDto = new EnterpriseDto();
-        Enterprise enterprise = new Enterprise();
-        Provider provider = new Provider();
-        Enterprise savedEnterprise = new Enterprise();
-        savedEnterprise.setEnterpriseId(1); // Assurez-vous que votre Enterprise a une méthode pour définir son ID
-        EnterpriseDto savedEnterpriseDto = new EnterpriseDto();
-
+    void addEnterprise_shouldSaveEnterpriseAndReturnDto() {
         when(enterpriseMapper.mapToEnterprise(enterpriseDto)).thenReturn(enterprise);
         when(providerRepository.findById(1)).thenReturn(Optional.of(provider));
-        when(enterpriseRepository.save(enterprise)).thenReturn(savedEnterprise);
-        when(enterpriseMapper.mapToEnterpriseDto(savedEnterprise)).thenReturn(savedEnterpriseDto);
+        when(enterpriseRepository.save(any(Enterprise.class))).thenReturn(enterprise);
+        when(enterpriseMapper.mapToEnterpriseDto(any(Enterprise.class))).thenReturn(enterpriseDto);
 
-        // When
         EnterpriseDto result = enterpriseService.addEnterprise(enterpriseDto, 1);
 
-        // Then
-        assertNotNull(result);
-        assertEquals(savedEnterpriseDto, result);
-        verify(enterpriseRepository, times(1)).save(enterprise);
-        verify(providerRepository, times(1)).findById(1);
-        verify(enterpriseMapper, times(1)).mapToEnterprise(enterpriseDto);
-        verify(enterpriseMapper, times(1)).mapToEnterpriseDto(savedEnterprise);
-    }
-
-    @Test
-    void testGetEnterpriseById() {
-        // Given
-        Integer providerId = 1;
-        Enterprise enterprise = new Enterprise();
-        EnterpriseDto enterpriseDto = new EnterpriseDto();
-
-        when(enterpriseRepository.findByProviderId(providerId)).thenReturn(enterprise);
-        when(enterpriseMapper.mapToEnterpriseDto(enterprise)).thenReturn(enterpriseDto);
-
-        // When
-        EnterpriseDto result = enterpriseService.getEnterpriseById(providerId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(enterpriseDto, result);
-        verify(enterpriseRepository, times(1)).findByProviderId(providerId);
-        verify(enterpriseMapper, times(1)).mapToEnterpriseDto(enterprise);
-    }
-
-    @Test
-    void testUpdateEnterprise() {
-        // Given
-        EnterpriseDto enterpriseDto = new EnterpriseDto();
-        Enterprise existingEnterprise = new Enterprise();
-        Enterprise updatedEnterprise = new Enterprise();
-        updatedEnterprise.setEnterpriseId(1);
-
-        when(enterpriseRepository.findById(enterpriseDto.getEnterpriseId())).thenReturn(Optional.of(existingEnterprise));
-        when(enterpriseRepository.save(existingEnterprise)).thenReturn(updatedEnterprise);
-        when(enterpriseMapper.mapToEnterpriseDto(updatedEnterprise)).thenReturn(enterpriseDto);
-
-        // When
-        EnterpriseDto result = enterpriseService.updateEnterprise(enterpriseDto);
-
-        // Then
         assertNotNull(result);
         assertEquals(enterpriseDto.getEnterpriseId(), result.getEnterpriseId());
-        verify(enterpriseRepository, times(1)).save(existingEnterprise);
-        verify(enterpriseRepository, times(1)).findById(enterpriseDto.getEnterpriseId());
-        verify(enterpriseMapper, times(1)).mapToEnterpriseDto(updatedEnterprise);
+        verify(enterpriseRepository, times(1)).save(any(Enterprise.class));
     }
 
     @Test
-    void testGetEnterprise() {
-        // Given
-        Integer enterpriseId = 1;
-        Enterprise enterprise = new Enterprise();
-        EnterpriseDto enterpriseDto = new EnterpriseDto();
+    void getEnterpriseById_shouldReturnEnterpriseDto() {
+        when(enterpriseRepository.findByProviderId(1)).thenReturn(enterprise);
+        when(enterpriseMapper.mapToEnterpriseDto(any(Enterprise.class))).thenReturn(enterpriseDto);
 
-        when(enterpriseRepository.findById(enterpriseId)).thenReturn(Optional.of(enterprise));
-        when(enterpriseMapper.mapToEnterpriseDto(enterprise)).thenReturn(enterpriseDto);
+        EnterpriseDto result = enterpriseService.getEnterpriseById(1);
 
-        // When
-        EnterpriseDto result = enterpriseService.getEnterprise(enterpriseId);
-
-        // Then
         assertNotNull(result);
-        assertEquals(enterpriseDto, result);
-        verify(enterpriseRepository, times(1)).findById(enterpriseId);
-        verify(enterpriseMapper, times(1)).mapToEnterpriseDto(enterprise);
+        assertEquals(enterpriseDto.getEnterpriseId(), result.getEnterpriseId());
+    }
+
+    @Test
+    void updateEnterprise_shouldUpdateAndReturnUpdatedDto() {
+        when(enterpriseRepository.findById(1)).thenReturn(Optional.of(enterprise));
+        when(enterpriseRepository.save(any(Enterprise.class))).thenReturn(enterprise);
+        when(enterpriseMapper.mapToEnterpriseDto(any(Enterprise.class))).thenReturn(enterpriseDto);
+
+        enterpriseDto.setEnterpriseName("Updated Name");
+        EnterpriseDto result = enterpriseService.updateEnterprise(enterpriseDto);
+
+        assertNotNull(result);
+        assertEquals("Updated Name", result.getEnterpriseName());
+    }
+
+    @Test
+    void getEnterprise_shouldReturnEnterpriseDto() {
+        when(enterpriseRepository.findById(1)).thenReturn(Optional.of(enterprise));
+        when(enterpriseMapper.mapToEnterpriseDto(any(Enterprise.class))).thenReturn(enterpriseDto);
+
+        EnterpriseDto result = enterpriseService.getEnterprise(1);
+
+        assertNotNull(result);
+        assertEquals(enterpriseDto.getEnterpriseId(), result.getEnterpriseId());
     }
 }

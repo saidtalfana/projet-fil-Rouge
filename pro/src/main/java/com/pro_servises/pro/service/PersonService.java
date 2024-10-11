@@ -2,7 +2,8 @@ package com.pro_servises.pro.service;
 
 import com.pro_servises.pro.model.Person;
 
-public interface UserService  {
+public interface PersonService {
 
-    Person getUserProfile(Integer id);
+
+    Person findByUserName(String username);
 }

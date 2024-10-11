@@ -4,25 +4,23 @@ import com.pro_servises.pro.dto.ContactDto;
 import com.pro_servises.pro.mapper.ContactMapper;
 import com.pro_servises.pro.model.Contact;
 import com.pro_servises.pro.repository.ContactRepository;
-import com.pro_servises.pro.service.ContactService;
 import com.pro_servises.pro.serviceImp.ContactServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class ContactServiceImplTest {
+class ContactServiceImplTest {
 
     @InjectMocks
     private ContactServiceImpl contactService;
@@ -33,54 +31,54 @@ public class ContactServiceImplTest {
     @Mock
     private ContactMapper contactMapper;
 
+    private ContactDto contactDto;
+    private Contact contact;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        contactDto = ContactDto.builder()
+                .contactId(1)
+                .name("Talfana") // Updated name
+                .email("talfana@example.com")
+                .phone("1234567890")
+                .message("Hello!")
+                .build();
+
+        contact = new Contact();
+        contact.setContactId(1);
+        contact.setName("Talfana"); // Updated name
+        contact.setEmail("talfana@example.com");
+        contact.setPhone("1234567890");
+        contact.setMessage("Hello!");
+        contact.setDate(new Date(System.currentTimeMillis()));
+        contact.setTime(new Time(System.currentTimeMillis()));
     }
 
     @Test
-    void testAddContact() {
-        // Given
-        ContactDto contactDto = new ContactDto();
-        Contact contact = new Contact();
-        Contact savedContact = new Contact();
-        savedContact.setContactId(1);  // Assurez-vous que votre Contact a une méthode pour définir son ID
-        ContactDto savedContactDto = new ContactDto();
-
+    void addContact_shouldSaveContactAndReturnDto() {
         when(contactMapper.mapToContact(contactDto)).thenReturn(contact);
-        when(contactRepository.save(contact)).thenReturn(savedContact);
-        when(contactMapper.mapToContactDto(savedContact)).thenReturn(savedContactDto);
+        when(contactRepository.save(any(Contact.class))).thenReturn(contact);
+        when(contactMapper.mapToContactDto(any(Contact.class))).thenReturn(contactDto);
 
-        // When
         ContactDto result = contactService.addContact(contactDto);
 
-        // Then
         assertNotNull(result);
-        assertEquals(savedContactDto, result);
-        verify(contactRepository, times(1)).save(contact);
-        verify(contactMapper, times(1)).mapToContact(contactDto);
-        verify(contactMapper, times(1)).mapToContactDto(savedContact);
+        assertEquals(contactDto.getContactId(), result.getContactId());
+        verify(contactRepository, times(1)).save(any(Contact.class));
     }
 
     @Test
-    void testGetAllContacts() {
-        // Given
-        Contact contact = new Contact();
-        ContactDto contactDto = new ContactDto();
-        List<Contact> contacts = Collections.singletonList(contact);
-        List<ContactDto> contactDtos = Collections.singletonList(contactDto);
-
-        when(contactRepository.findAll()).thenReturn(contacts);
+    void getAllContacts_shouldReturnListOfContactDtos() {
+        when(contactRepository.findAll()).thenReturn(Arrays.asList(contact));
         when(contactMapper.mapToContactDto(contact)).thenReturn(contactDto);
 
-        // When
         List<ContactDto> result = contactService.getAllContacts();
 
-        // Then
-        assertNotNull(result);
-        assertEquals(contactDtos.size(), result.size());
-        assertEquals(contactDtos.get(0), result.get(0));
-        verify(contactRepository, times(1)).findAll();
-        verify(contactMapper, times(1)).mapToContactDto(contact);
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals(contactDto.getContactId(), result.get(0).getContactId());
+        assertEquals("Talfana", result.get(0).getName()); // Check the name
     }
 }

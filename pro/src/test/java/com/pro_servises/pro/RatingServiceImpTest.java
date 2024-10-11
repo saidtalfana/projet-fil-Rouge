@@ -39,54 +39,132 @@ public class RatingServiceImpTest {
     }
 
     @Test
-    void testAddRating_UserNotFound() {
+    void testAddRating() {
         // Given
-        Rating rating = new Rating();
         Integer productId = 1;
         Integer userId = 1;
+        Rating rating = new Rating();
+        rating.setStars(5);
+        rating.setComment("Great product!");
 
-        when(productRepository.findById(productId)).thenReturn(Optional.of(new Product()));
-        when(userRepository.findById(userId)).thenReturn(Optional.empty()); // User not found
+        Product product = new Product();
+        User user = new User();
 
-        // When/Then
-        NotFoundException thrown = assertThrows(
-                NotFoundException.class,
-                () -> ratingService.addRating(rating, productId, userId)
-        );
-        assertEquals("User id " + userId + " not found", thrown.getMessage());
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(ratingRepository.save(rating)).thenReturn(rating);
+
+        // When
+        Rating result = ratingService.addRating(rating, productId, userId);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(5, result.getStars());
+        verify(productRepository).findById(productId);
+        verify(userRepository).findById(userId);
+        verify(ratingRepository).save(rating);
     }
 
     @Test
     void testAddRating_ProductNotFound() {
         // Given
-        Rating rating = new Rating();
         Integer productId = 1;
         Integer userId = 1;
+        Rating rating = new Rating();
 
-        when(productRepository.findById(productId)).thenReturn(Optional.empty()); // Product not found
-        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
         // When/Then
         NotFoundException thrown = assertThrows(
                 NotFoundException.class,
                 () -> ratingService.addRating(rating, productId, userId)
         );
-        assertEquals("Product id " + productId + " not found", thrown.getMessage());
+        assertEquals("Product id 1 not found", thrown.getMessage());
     }
 
     @Test
-    void testUpdateRating_RatingNotFound() {
+    void testAddRating_UserNotFound() {
         // Given
+        Integer productId = 1;
+        Integer userId = 1;
         Rating rating = new Rating();
-        Integer id = 1;
 
-        when(ratingRepository.findById(id)).thenReturn(Optional.empty()); // Rating not found
+        when(productRepository.findById(productId)).thenReturn(Optional.of(new Product()));
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // When/Then
         NotFoundException thrown = assertThrows(
                 NotFoundException.class,
-                () -> ratingService.updateRating(rating, id)
+                () -> ratingService.addRating(rating, productId, userId)
         );
-        assertEquals("Rating id " + id + " not found", thrown.getMessage());
+        assertEquals("User id 1 not found", thrown.getMessage());
+    }
+
+    @Test
+    void testUpdateRating() {
+        // Given
+        Integer ratingId = 1;
+        Rating existingRating = new Rating();
+        existingRating.setStars(3);
+        existingRating.setComment("Okay product.");
+
+        Rating updatedRating = new Rating();
+        updatedRating.setStars(4);
+        updatedRating.setComment("Better than okay.");
+
+        when(ratingRepository.findById(ratingId)).thenReturn(Optional.of(existingRating));
+        when(ratingRepository.save(existingRating)).thenReturn(updatedRating);
+
+        // When
+        Rating result = ratingService.updateRating(updatedRating, ratingId);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(4, result.getStars());
+        verify(ratingRepository).findById(ratingId);
+        verify(ratingRepository).save(existingRating);
+    }
+
+    @Test
+    void testUpdateRating_NotFound() {
+        // Given
+        Integer ratingId = 1;
+        Rating updatedRating = new Rating();
+
+        when(ratingRepository.findById(ratingId)).thenReturn(Optional.empty());
+
+        // When/Then
+        NotFoundException thrown = assertThrows(
+                NotFoundException.class,
+                () -> ratingService.updateRating(updatedRating, ratingId)
+        );
+        assertEquals("Rating id 1 not found", thrown.getMessage());
+    }
+
+    @Test
+    void testDeleteRating() {
+        // Given
+        Integer ratingId = 1;
+        when(ratingRepository.existsById(ratingId)).thenReturn(true);
+
+        // When
+        ratingService.deleteRating(ratingId);
+
+        // Then
+        verify(ratingRepository).deleteById(ratingId);
+    }
+
+    @Test
+    void testDeleteRating_NotFound() {
+        // Given
+        Integer ratingId = 1;
+        when(ratingRepository.existsById(ratingId)).thenReturn(false);
+
+        // When/Then
+        NotFoundException thrown = assertThrows(
+                NotFoundException.class,
+                () -> ratingService.deleteRating(ratingId)
+        );
+        assertEquals("Rating id 1 not found", thrown.getMessage());
     }
 }

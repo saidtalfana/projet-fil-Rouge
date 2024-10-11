@@ -5,11 +5,12 @@ import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.UserRepository;
+import com.pro_servises.pro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
 
 @Autowired

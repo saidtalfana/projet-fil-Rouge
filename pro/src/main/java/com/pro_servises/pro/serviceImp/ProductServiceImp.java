@@ -116,14 +116,16 @@ public class ProductServiceImp implements ProductService{
         return entepriseRepository.findByProductId(productId);
     }
 
+    @Override
     public long countProductsByEnterprise(Long enterpriseId) {
         return productRepository.countProductsByEnterprise(enterpriseId);
     }
-
+    @Override
     public List<Product> getProductsWithOrders() {
+
         return productRepository.findProductsWithOrders();
     }
-
+    @Override
     public Map<String, Long> countProductsByStatus(Integer enterpriseId) {
         List<Object[]> results = productRepository.countProductsByStatus(enterpriseId);
         Map<String, Long> statusCountMap = new HashMap<>();
@@ -137,7 +139,7 @@ public class ProductServiceImp implements ProductService{
 
         return statusCountMap;
     }
-
+   @Override
     public Double getAverageStarsForProduct(Integer productId) {
         return productRepository.getAverageStarsForProduct(productId);
     }

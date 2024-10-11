@@ -14,13 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserDetailsServiceImplTest {
+public class UserDetailsServiceImplTest {
+
+    @InjectMocks
+    private UserDetailsServiceImpl userDetailsService;
 
     @Mock
     private PersonRepository personRepository;
-
-    @InjectMocks
-    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -30,29 +30,33 @@ class UserDetailsServiceImplTest {
     @Test
     void testLoadUserByUsername_Success() {
         // Given
-        String username = "testUser";
+        String username = "testuser";
         Person person = new Person();
         person.setUsername(username);
-
+        // Mock the repository method
         when(personRepository.findByUsername(username)).thenReturn(person);
 
         // When
-        UserDetails result = userDetailsServiceImpl.loadUserByUsername(username);
+        UserDetails result = userDetailsService.loadUserByUsername(username);
 
         // Then
         assertNotNull(result);
         assertEquals(username, result.getUsername());
-        verify(personRepository, times(1)).findByUsername(username);
+        verify(personRepository).findByUsername(username);
     }
 
     @Test
-    void testLoadUserByUsername_UserNotFound() {
+    void testLoadUserByUsername_NotFound() {
         // Given
-        String username = "unknownUser";
+        String username = "unknownuser";
         when(personRepository.findByUsername(username)).thenReturn(null);
 
-        // When / Then
-        assertThrows(UsernameNotFoundException.class, () -> userDetailsServiceImpl.loadUserByUsername(username));
-        verify(personRepository, times(1)).findByUsername(username);
+        // When/Then
+        UsernameNotFoundException thrown = assertThrows(
+                UsernameNotFoundException.class,
+                () -> userDetailsService.loadUserByUsername(username)
+        );
+        assertEquals("person not found", thrown.getMessage());
+        verify(personRepository).findByUsername(username);
     }
 }

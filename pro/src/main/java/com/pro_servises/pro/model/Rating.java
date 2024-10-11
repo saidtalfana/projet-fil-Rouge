@@ -26,20 +26,12 @@ public class Rating {
 
     private String comment;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    @JsonBackReference(value = "productReference") // Unique reference name
-//    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "userReference") // Unique reference name
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    @JsonBackReference(value = "productRatings") // Ensure this matches the Product side
-//    private Product product;
 
 
     @ManyToOne

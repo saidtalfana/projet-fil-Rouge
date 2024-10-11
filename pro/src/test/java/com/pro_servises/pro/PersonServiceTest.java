@@ -7,7 +7,7 @@ import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.PersonRepository;
-import com.pro_servises.pro.serviceImp.PersonService;
+import com.pro_servises.pro.serviceImp.PersonServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class PersonServiceTest {
 
     @InjectMocks
-    private PersonService personService;
+    private PersonServiceImp personServiceImp;
 
     @Mock
     private PersonRepository personRepository;
@@ -42,7 +42,7 @@ public class PersonServiceTest {
         when(personRepository.findByUsername(username)).thenReturn(person);
 
         // When
-        Person result = personService.findByUserName(username);
+        Person result = personServiceImp.findByUserName(username);
 
         // Then
         assertNotNull(result);
@@ -69,7 +69,7 @@ public class PersonServiceTest {
         when(personRepository.save(any(Admin.class))).thenReturn(admin);
 
         // When
-        Person result = personService.signUp(Role.ADMIN, signUpRequest);
+        Person result = personServiceImp.signUp(Role.ADMIN, signUpRequest);
 
         // Then
         assertNotNull(result);
@@ -102,7 +102,7 @@ public class PersonServiceTest {
         when(personRepository.save(any(User.class))).thenReturn(user);
 
         // When
-        Person result = personService.signUp(Role.USER, signUpRequest);
+        Person result = personServiceImp.signUp(Role.USER, signUpRequest);
 
         // Then
         assertNotNull(result);
@@ -135,7 +135,7 @@ public class PersonServiceTest {
         when(personRepository.save(any(Provider.class))).thenReturn(provider);
 
         // When
-        Person result = personService.signUp(Role.PROVIDER, signUpRequest);
+        Person result = personServiceImp.signUp(Role.PROVIDER, signUpRequest);
 
         // Then
         assertNotNull(result);
@@ -161,7 +161,7 @@ public class PersonServiceTest {
         // When/Then
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
-                () -> personService.signUp(null, signUpRequest)
+                () -> personServiceImp.signUp(null, signUpRequest)
         );
         assertEquals("Invalid person type", thrown.getMessage());
     }

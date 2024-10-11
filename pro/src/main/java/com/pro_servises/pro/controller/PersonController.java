@@ -5,7 +5,8 @@ import com.pro_servises.pro.dto.LoginRequest;
 import com.pro_servises.pro.dto.SignupRequest;
 import com.pro_servises.pro.enums.Role;
 import com.pro_servises.pro.model.Person;
-import com.pro_servises.pro.serviceImp.PersonService;
+import com.pro_servises.pro.serviceImp.PersonServiceImp;
+import com.pro_servises.pro.serviceImp.PersonServiceImp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,12 +21,12 @@ import java.util.Map;
 @RestController
 public class PersonController {
 
-    private final PersonService personService;
+    private final PersonServiceImp personServiceImp;
     private final AuthenticationManager authenticationManager;
 
-    public PersonController(AuthenticationManager authenticationManager, PersonService personService) {
+    public PersonController(AuthenticationManager authenticationManager, PersonServiceImp personServiceImp) {
         this.authenticationManager = authenticationManager;
-        this.personService = personService;
+        this.personServiceImp = personServiceImp;
     }
 
     /**
@@ -37,7 +38,7 @@ public class PersonController {
      */
     @PostMapping("/signup")
     public ResponseEntity<Person> signUp(@RequestParam("role") Role role, @RequestBody SignupRequest signUpRequest) {
-        Person createPerson = personService.signUp(role, signUpRequest);
+        Person createPerson = personServiceImp.signUp(role, signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createPerson);
     }
 
@@ -54,7 +55,7 @@ public class PersonController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Person person = personService.findByUserName(loginRequest.getUsername());
+        Person person = personServiceImp.findByUserName(loginRequest.getUsername());
 
         String token = JwtAuth.generateToken(person.getUsername(), person.getRoles(), person.getId());
         Map<String, String> response = new HashMap<>();

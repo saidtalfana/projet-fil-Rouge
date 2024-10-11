@@ -7,6 +7,7 @@ import com.pro_servises.pro.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -29,6 +30,14 @@ public interface ProductService {
      List<Product> filterProducts(Category category, Double minPrice, Double maxPrice, String name);
 
      Page<Product> getProducts(Pageable pageable);
+
+    Double getAverageStarsForProduct(Integer productId);
+
+    Map<String, Long> countProductsByStatus(Integer enterpriseId);
+
+    List<Product> getProductsWithOrders();
+
+    long countProductsByEnterprise(Long enterpriseId);
 
 
 

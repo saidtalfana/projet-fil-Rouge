@@ -7,23 +7,24 @@ import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.PersonRepository;
+import com.pro_servises.pro.service.PersonService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonService {
+public class PersonServiceImp {
 
     private final PersonRepository personRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+    public PersonServiceImp(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public Person findByUserName(String username){
+
         return personRepository.findByUsername(username);
     }
 

@@ -2,7 +2,6 @@ package com.pro_servises.pro.serviceImp;
 
 import com.pro_servises.pro.dto.CommandDTO;
 import com.pro_servises.pro.dto.OrderDto;
-import com.pro_servises.pro.enums.OrderStatus;
 import com.pro_servises.pro.exception.NotFoundException;
 import com.pro_servises.pro.mapper.OrderMapper;
 import com.pro_servises.pro.model.Order;
@@ -110,12 +109,13 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
     public List<Object[]> getProductOrdersCountByEnterpriseId(Long enterpriseId) {
         return orderRepository.findProductOrdersCountByEnterpriseId(enterpriseId);
     }
 
 
-
+    @Override
     public List<CommandDTO> getUserOrders(Integer userId) {
         List<Order> orders = orderRepository.findOrderByUserId(userId); // Récupérer les commandes de l'utilisateur
         return orders.stream().map(this::convertToDTO).collect(Collectors.toList());

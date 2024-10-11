@@ -1,5 +1,6 @@
 package com.pro_servises.pro.service;
 
+import com.pro_servises.pro.dto.CommandDTO;
 import com.pro_servises.pro.dto.OrderDto;
 
 import java.util.List;
@@ -21,5 +22,9 @@ public interface OrderService {
     List<OrderDto> getAllOrders();
 
     void updateOrderStatusToDone(Integer orderId);
+
+    List<Object[]> getProductOrdersCountByEnterpriseId(Long enterpriseId);
+
+    List<CommandDTO> getUserOrders(Integer userId);
 
 }

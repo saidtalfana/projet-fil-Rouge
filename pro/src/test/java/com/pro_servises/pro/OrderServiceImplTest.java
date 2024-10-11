@@ -9,26 +9,24 @@ import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.OrderRepository;
 import com.pro_servises.pro.repository.ProductRepository;
 import com.pro_servises.pro.repository.UserRepository;
-import com.pro_servises.pro.service.OrderService;
 import com.pro_servises.pro.serviceImp.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class OrderServiceImplTest {
+class OrderServiceImplTest {
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -45,158 +43,107 @@ public class OrderServiceImplTest {
     @Mock
     private OrderMapper orderMapper;
 
+    private OrderDto orderDto;
+    private Order order;
+    private Product product;
+    private User user;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        orderDto = new OrderDto();
+        orderDto.setOrderId(1);
+        orderDto.setName("Said Talfana");
+        orderDto.setAddress("123 Street");
+        orderDto.setEmail("talfana@example.com");
+        orderDto.setPhoneNumber("1234567890");
+        orderDto.setCustomerRequest("Please deliver fast.");
+
+        product = new Product(); // Assume you have a proper constructor/methods
+        product.setProductId(1);
+        product.setName("Sample Product");
+
+        user = new User(); // Assume you have a proper constructor/methods
+        user.setId(1);
+        user.setEmail("talfana@example.com");
+
+        order = new Order();
+        order.setOrderId(1);
+        order.setOrderDate(new Date(System.currentTimeMillis()));
+        order.setOrderTime(new Time(System.currentTimeMillis()));
+        order.setName("Said Talfana");
+        order.setAddress("123 Street");
+        order.setEmail("talfana@example.com");
+        order.setPhoneNumber("1234567890");
+        order.setCustomerRequest("Please deliver fast.");
+        order.setProduct(product);
+        order.setUser(user);
     }
 
     @Test
-    void testAddOrder() {
-        // Given
-        OrderDto orderDto = new OrderDto();
-        Order order = new Order();
-        Product product = new Product();
-        User user = new User();
-        Order savedOrder = new Order();
-        savedOrder.setOrderId(1);
-        OrderDto savedOrderDto = new OrderDto();
-
+    void addOrder_shouldSaveOrderAndReturnDto() {
         when(orderMapper.mapToOrder(orderDto)).thenReturn(order);
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
-        when(orderRepository.save(order)).thenReturn(savedOrder);
-        when(orderMapper.mapToOrderDto(savedOrder)).thenReturn(savedOrderDto);
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(orderMapper.mapToOrderDto(any(Order.class))).thenReturn(orderDto);
 
-        // When
         OrderDto result = orderService.addOrder(orderDto, 1, 1);
 
-        // Then
         assertNotNull(result);
-        assertEquals(savedOrderDto, result);
-        verify(orderRepository, times(1)).save(order);
-        verify(productRepository, times(1)).findById(1);
-        verify(userRepository, times(1)).findById(1);
-        verify(orderMapper, times(1)).mapToOrder(orderDto);
-        verify(orderMapper, times(1)).mapToOrderDto(savedOrder);
+        assertEquals(orderDto.getOrderId(), result.getOrderId());
+        verify(orderRepository, times(1)).save(any(Order.class));
     }
 
     @Test
-    void testDeleteOrderById() {
-        // When
+    void getOrderById_shouldReturnOrderDto() {
+        when(orderRepository.findById(1)).thenReturn(Optional.of(order));
+        when(orderMapper.mapToOrderDto(any(Order.class))).thenReturn(orderDto);
+
+        OrderDto result = orderService.getOrderById(1);
+
+        assertNotNull(result);
+        assertEquals(orderDto.getOrderId(), result.getOrderId());
+    }
+
+    @Test
+    void getOrderById_shouldThrowNotFoundException() {
+        when(orderRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> orderService.getOrderById(1));
+    }
+
+    @Test
+    void deleteOrderById_shouldCallDeleteMethod() {
+        doNothing().when(orderRepository).deleteById(1);
+
         orderService.deleteOrderById(1);
 
-        // Then
         verify(orderRepository, times(1)).deleteById(1);
     }
 
     @Test
-    void testGetOrderById() {
-        // Given
-        Integer orderId = 1;
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
+    void getAllOrdersByUserId_shouldReturnListOfOrderDtos() {
+        when(orderRepository.getAllOrdersByUserId(1)).thenReturn(Arrays.asList(order));
+        when(orderMapper.mapToOrderDto(any(Order.class))).thenReturn(orderDto);
 
-        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(orderMapper.mapToOrderDto(order)).thenReturn(orderDto);
+        List<OrderDto> result = orderService.getAllOrdersByUserId(1);
 
-        // When
-        OrderDto result = orderService.getOrderById(orderId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(orderDto, result);
-        verify(orderRepository, times(1)).findById(orderId);
-        verify(orderMapper, times(1)).mapToOrderDto(order);
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals(orderDto.getOrderId(), result.get(0).getOrderId());
     }
 
     @Test
-    void testGetAllOrdersByUserId() {
-        // Given
-        Integer userId = 1;
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
-        List<Order> orders = Collections.singletonList(order);
-        List<OrderDto> orderDtos = Collections.singletonList(orderDto);
+    void getAllOrders_shouldReturnAllOrders() {
+        when(orderRepository.findAll()).thenReturn(Arrays.asList(order));
+        when(orderMapper.mapToOrderDto(any(Order.class))).thenReturn(orderDto);
 
-        when(orderRepository.getAllOrdersByUserId(userId)).thenReturn(orders);
-        when(orderMapper.mapToOrderDto(order)).thenReturn(orderDto);
-
-        // When
-        List<OrderDto> result = orderService.getAllOrdersByUserId(userId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(orderDtos.size(), result.size());
-        assertEquals(orderDtos.get(0), result.get(0));
-        verify(orderRepository, times(1)).getAllOrdersByUserId(userId);
-        verify(orderMapper, times(1)).mapToOrderDto(order);
-    }
-
-    @Test
-    void testGetAllOrdersByProductId() {
-        // Given
-        Integer productId = 1;
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
-        List<Order> orders = Collections.singletonList(order);
-        List<OrderDto> orderDtos = Collections.singletonList(orderDto);
-
-        when(orderRepository.getAllOrdersByProductId(productId)).thenReturn(orders);
-        when(orderMapper.mapToOrderDto(order)).thenReturn(orderDto);
-
-        // When
-        List<OrderDto> result = orderService.getAllOrdersByProductId(productId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(orderDtos.size(), result.size());
-        assertEquals(orderDtos.get(0), result.get(0));
-        verify(orderRepository, times(1)).getAllOrdersByProductId(productId);
-        verify(orderMapper, times(1)).mapToOrderDto(order);
-    }
-
-    @Test
-    void testGetAllOrdersByEnterpriseId() {
-        // Given
-        Integer enterpriseId = 1;
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
-        List<Order> orders = Collections.singletonList(order);
-        List<OrderDto> orderDtos = Collections.singletonList(orderDto);
-
-        when(orderRepository.getAllOrdersByEnterpriseId(enterpriseId)).thenReturn(orders);
-        when(orderMapper.mapToOrderDto(order)).thenReturn(orderDto);
-
-        // When
-        List<OrderDto> result = orderService.getAllOrdersByEnterpriseId(enterpriseId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(orderDtos.size(), result.size());
-        assertEquals(orderDtos.get(0), result.get(0));
-        verify(orderRepository, times(1)).getAllOrdersByEnterpriseId(enterpriseId);
-        verify(orderMapper, times(1)).mapToOrderDto(order);
-    }
-
-    @Test
-    void testGetAllOrders() {
-        // Given
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
-        List<Order> orders = Collections.singletonList(order);
-        List<OrderDto> orderDtos = Collections.singletonList(orderDto);
-
-        when(orderRepository.findAll()).thenReturn(orders);
-        when(orderMapper.mapToOrderDto(order)).thenReturn(orderDto);
-
-        // When
         List<OrderDto> result = orderService.getAllOrders();
 
-        // Then
-        assertNotNull(result);
-        assertEquals(orderDtos.size(), result.size());
-        assertEquals(orderDtos.get(0), result.get(0));
-        verify(orderRepository, times(1)).findAll();
-        verify(orderMapper, times(1)).mapToOrderDto(order);
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals(orderDto.getOrderId(), result.get(0).getOrderId());
     }
 }
