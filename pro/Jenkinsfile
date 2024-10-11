@@ -29,23 +29,15 @@ pipeline {
             }
         }
 
-//         stage('SonarQube Analysis') {
-//             steps {
-//                 // Run SonarQube analysis
-//                 withSonarQubeEnv("${SONARQUBE_SERVER}") { // Use quotes for variable
-//                     bat "mvn sonar:sonar -Dsonar.projectKey=pro_services -Dsonar.host.url=http://localhost:9000 -Dsonar.token=${SONAR_TOKEN}"
-//                 }
-//             }
-//         }
         stage('SonarQube Analysis') {
-                    steps {
-                        dir('pro') {
-                            withSonarQubeEnv('sonar-server') {
-                                bat "mvn sonar:sonar -Dsonar.token=${SONAR_TOKEN}"
-                            }
-                        }
+            steps {
+                dir('pro') {
+                    withSonarQubeEnv('sonar-server') {
+                        bat "mvn sonar:sonar -Dsonar.projectKey=pro_services -Dsonar.host.url=http://localhost:9000 -Dsonar.token=${SONAR_TOKEN}"
                     }
                 }
+            }
+        }
 
         stage('Quality Gate Check') {
             steps {
