@@ -30,8 +30,10 @@ pipeline {
             steps {
                 dir('pro') {
                     // Clean up scanner and sonar directories
-                    bat "rmdir /s /q .scannerwork"
-                    bat "rmdir /s /q target\\sonar"
+                    bat "del /q .scannerwork\\report-task.txt || echo 'No report-task.txt found in .scannerwork'"
+                    bat "del /q target\\sonar\\report-task.txt || echo 'No report-task.txt found in target\\sonar'"
+                    bat "rmdir /s /q .scannerwork || echo 'No .scannerwork directory found'"
+                    bat "rmdir /s /q target\\sonar || echo 'No target\\sonar directory found'"
                 }
             }
         }
