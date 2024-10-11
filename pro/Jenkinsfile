@@ -29,11 +29,9 @@ pipeline {
         stage('Cleanup') {
             steps {
                 dir('pro') {
-                    // Clean up scanner and sonar directories
-                    bat "del /q .scannerwork\\report-task.txt || echo 'No report-task.txt found in .scannerwork'"
-                    bat "del /q target\\sonar\\report-task.txt || echo 'No report-task.txt found in target\\sonar'"
-                    bat "rmdir /s /q .scannerwork || echo 'No .scannerwork directory found'"
-                    bat "rmdir /s /q target\\sonar || echo 'No target\\sonar directory found'"
+                    echo "Cleaning up scanner and sonar directories..."
+                    bat "if exist .scannerwork (rmdir /s /q .scannerwork) else echo No .scannerwork directory found"
+                    bat "if exist target\\sonar (rmdir /s /q target\\sonar) else echo No target\\sonar directory found"
                 }
             }
         }
