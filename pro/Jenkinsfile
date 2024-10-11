@@ -17,16 +17,6 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
-            steps {
-                dir('pro') {
-                    echo "Cleaning up scanner and sonar directories..."
-                    bat "if exist .scannerwork (rmdir /s /q .scannerwork) else echo No .scannerwork directory found"
-                    bat "if exist target\\sonar (rmdir /s /q target\\sonar) else echo No target\\sonar directory found"
-                }
-            }
-        }
-
         stage('Build and Unit Tests') {
             steps {
                 dir('pro') {
