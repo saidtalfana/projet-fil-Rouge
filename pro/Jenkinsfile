@@ -8,7 +8,7 @@ pipeline {
     environment {
         SONARQUBE_SERVER = 'sonar-server'
         DOCKER_HUB_REPO = 'saidtalfana98/projet-fil-rouge'
-        SONAR_TOKEN = credentials('sonar-credential')
+        // Removed direct assignment of SONAR_TOKEN for better security
     }
 
     stages {
@@ -33,20 +33,23 @@ pipeline {
             steps {
                 dir('pro') {
                     withSonarQubeEnv('sonar-server') {
-                        bat "mvn sonar:sonar -Dsonar.projectKey=pro_services -Dsonar.host.url=http://localhost:9000 -Dsonar.token=${SONAR_TOKEN}"
+                        // Use withCredentials to handle SONAR_TOKEN securely
+                        withCredentials([string(credentialsId: 'sonar-credential', variable: 'SONAR_TOKEN')]) {
+                            bat "mvn sonar:sonar -Dsonar.projectKey=pro_services -Dsonar.host.url=http://localhost:9000 -Dsonar.token=${SONAR_TOKEN}"
+                        }
                     }
                 }
             }
         }
 
-      stage('Quality Gate Check') {
-          steps {
-              // Wait for SonarQube Quality Gate results
-              timeout(time: 15, unit: 'MINUTES') {
-                  waitForQualityGate abortPipeline: true
-              }
-          }
-      }
+        stage('Quality Gate Check') {
+            steps {
+                // Wait for SonarQube Quality Gate results
+                timeout(time: 15, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
         stage('Build Docker Images') {
             steps {
