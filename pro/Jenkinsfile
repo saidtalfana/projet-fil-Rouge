@@ -11,16 +11,6 @@ pipeline {
     }
 
     stages {
-        stage('Cleanup') {
-            steps {
-                dir('pro') {
-                    echo "Cleaning up scanner and sonar directories..."
-                    bat "if exist .scannerwork (rmdir /s /q .scannerwork) else echo No .scannerwork directory found"
-                    bat "if exist target\\sonar (rmdir /s /q target\\sonar) else echo No target\\sonar directory found"
-                }
-            }
-        }
-
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/saidtalfana/projet-fil-Rouge.git'
@@ -36,6 +26,7 @@ pipeline {
             }
         }
 
+
         stage('SonarQube Analysis') {
             steps {
                 dir('pro') {
@@ -50,7 +41,7 @@ pipeline {
 
         stage('Quality Gate Check') {
             steps {
-                timeout(time: 15, unit: 'MINUTES') {
+                timeout(time: 30, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
