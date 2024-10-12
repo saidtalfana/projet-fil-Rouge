@@ -6,7 +6,6 @@ import com.pro_servises.pro.dto.SignupRequest;
 import com.pro_servises.pro.enums.Role;
 import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.serviceImp.PersonServiceImp;
-import com.pro_servises.pro.serviceImp.PersonServiceImp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

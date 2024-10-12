@@ -1,24 +1,24 @@
 version: "3.4"
 services:
   docnet:
-    build: .
-    container_name: fil_rouge
-    restart: always
+    build: .                    # Build the service from the Dockerfile in the current directory
+    container_name: fil_rouge    # Name of the container
+    restart: always              # Restart policy
     ports:
-      - "1998:1998"
+      - "1998:1998"              # Map host port 1998 to container port 1998
     depends_on:
-      - mysqldb
+      - mysqldb                  # Ensure mysqldb starts before this service
 
   mysqldb:
-    image: "mysql:latest"
-    restart: always
+    image: "mysql:latest"       # Use the latest MySQL image
+    restart: always              # Restart policy
     ports:
-      - "3307:3306"
+      - "3307:3306"              # Map host port 3307 to container port 3306
     environment:
-      - MYSQL_DATABASE=spring
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=spring    # Create a database named 'spring'
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes # Allow empty password for the root user
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mysql        # Persist MySQL data
 
 volumes:
-  db:
+  db:                            # Define a named volume for MySQL

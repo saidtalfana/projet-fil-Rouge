@@ -8,3 +8,14 @@ public enum Category {
     CONSTRUCTION,
     INDUSTRY
 }
+
+
+
+//public enum ServiceCategory {
+//    WEB_DEVELOPMENT,
+//    DIGITAL_MARKETING,
+//    GRAPHIC_DESIGN,
+//    CONSULTING,
+//    MOBILE_APP_DEVELOPMENT,
+//    CLOUD_SOLUTIONS
+//}

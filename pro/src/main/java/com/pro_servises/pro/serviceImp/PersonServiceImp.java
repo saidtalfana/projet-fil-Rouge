@@ -7,7 +7,6 @@ import com.pro_servises.pro.model.Person;
 import com.pro_servises.pro.model.Provider;
 import com.pro_servises.pro.model.User;
 import com.pro_servises.pro.repository.PersonRepository;
-import com.pro_servises.pro.service.PersonService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
