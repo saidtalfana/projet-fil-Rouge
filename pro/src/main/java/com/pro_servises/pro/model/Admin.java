@@ -16,12 +16,4 @@ import java.util.Set;
 @DiscriminatorValue("ADMIN")
 public class Admin extends Person {
 
-
-
-    @OneToMany(mappedBy = "admin")
-    @Transient
-    private Set<Article> articles;
-
-
-
 }

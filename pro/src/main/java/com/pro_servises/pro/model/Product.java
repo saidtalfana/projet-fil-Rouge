@@ -8,6 +8,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pro_servises.pro.enums.Category;
 import com.pro_servises.pro.enums.ProductStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +31,24 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productId;
+    @NotBlank(message = "Product name is required")
+    @Size(max = 100, message = "Product name must not exceed 100 characters")
     private String name;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private Double price;
+
+    @NotNull(message = "Category is required")
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @NotNull(message = "Product status is required")
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
     @Lob
@@ -50,9 +68,6 @@ public class Product {
     @JsonManagedReference(value = "productOrders") // Ensure this matches the Order side
     private Set<Order> orders = new HashSet<>();
 
-//    @OneToMany(mappedBy = "product")
-//    @JsonManagedReference(value = "productRatings") // Ensure this corresponds to the Rating class
-//    private Set<Rating> ratings = new HashSet<>();
 
     @OneToMany(mappedBy = "product")
     @JsonManagedReference(value = "productRatings")
