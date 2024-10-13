@@ -10,23 +10,44 @@ import com.pro_servises.pro.repository.PersonRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the PersonService interface for managing user-related operations.
+ */
 @Service
 public class PersonServiceImp {
 
     private final PersonRepository personRepository;
-
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor for PersonServiceImp.
+     *
+     * @param personRepository The repository for accessing person data.
+     * @param passwordEncoder  The password encoder for hashing passwords.
+     */
     public PersonServiceImp(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Person findByUserName(String username){
-
+    /**
+     * Finds a Person by username.
+     *
+     * @param username The username of the person to find.
+     * @return The Person associated with the given username.
+     */
+    public Person findByUserName(String username) {
         return personRepository.findByUsername(username);
     }
 
+    /**
+     * Registers a new person based on the specified role and signup request.
+     *
+     * @param role          The role of the person (ADMIN, USER, PROVIDER).
+     * @param signUpRequest The signup request containing the person's details.
+     * @return The newly created Person object.
+     * @throws IllegalArgumentException If the role is invalid.
+     */
     public Person signUp(Role role, SignupRequest signUpRequest) {
         String hashedPassword = passwordEncoder.encode(signUpRequest.getPassword());
 
@@ -35,7 +56,6 @@ public class PersonServiceImp {
         }
         Person person;
         switch (role) {
-
             case ADMIN:
                 person = new Admin();
                 person.setRoles(Role.ADMIN);
@@ -45,7 +65,7 @@ public class PersonServiceImp {
                 person.setRoles(Role.USER);
                 break;
             case PROVIDER:
-                person = new Provider()  ;
+                person = new Provider();
                 person.setRoles(Role.PROVIDER);
                 break;
             default:
@@ -57,6 +77,6 @@ public class PersonServiceImp {
         person.setEmail(signUpRequest.getEmail());
         person.setPassword(hashedPassword);
 
-        return personRepository.save(person);    }
-
+        return personRepository.save(person);
+    }
 }

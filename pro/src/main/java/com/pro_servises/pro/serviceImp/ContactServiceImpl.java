@@ -12,28 +12,46 @@ import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link ContactService} interface for managing contacts.
+ */
 @Service
 public class ContactServiceImpl implements ContactService {
 
     private final ContactRepository contactRepository;
     private final ContactMapper contactMapper;
 
+    /**
+     * Constructs a {@link ContactServiceImpl} instance.
+     *
+     * @param contactRepository the repository for managing contacts
+     * @param contactMapper     the mapper for converting between Contact and ContactDto
+     */
     public ContactServiceImpl(ContactRepository contactRepository, ContactMapper contactMapper) {
         this.contactRepository = contactRepository;
         this.contactMapper = contactMapper;
     }
 
+    /**
+     * Adds a new contact.
+     *
+     * @param contactDto the data transfer object containing contact information
+     * @return the added contact as a ContactDto
+     */
     @Override
     public ContactDto addContact(ContactDto contactDto) {
         Contact contact = contactMapper.mapToContact(contactDto);
-        contact.setDate(new Date( System.currentTimeMillis()));
-        contact.setTime(new Time( System.currentTimeMillis()));
+        contact.setDate(new Date(System.currentTimeMillis()));
+        contact.setTime(new Time(System.currentTimeMillis()));
         Contact savedContact = contactRepository.save(contact);
         return contactMapper.mapToContactDto(savedContact);
     }
 
-
-
+    /**
+     * Retrieves all contacts.
+     *
+     * @return a list of all contacts as ContactDto
+     */
     @Override
     public List<ContactDto> getAllContacts() {
         List<Contact> contacts = contactRepository.findAll();
@@ -41,5 +59,4 @@ public class ContactServiceImpl implements ContactService {
                 .map(contactMapper::mapToContactDto)
                 .collect(Collectors.toList());
     }
-
 }
