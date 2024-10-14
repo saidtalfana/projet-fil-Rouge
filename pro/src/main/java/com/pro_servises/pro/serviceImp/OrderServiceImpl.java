@@ -182,15 +182,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Retrieves all orders placed by a specific user in the form of CommandDTO.
+     * Retrieves a list of CommandDTOs for the given user ID.
      *
-     * @param userId the ID of the user whose orders are to be retrieved
-     * @return a list of CommandDTO representing user orders
+     * @param userId the ID of the user
+     * @return a list of CommandDTO objects
      */
-    @Override
     public List<CommandDTO> getUserOrders(Integer userId) {
+        // Fetch the orders by user ID
         List<Order> orders = orderRepository.findOrderByUserId(userId);
-        return orders.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        // Map orders to CommandDTOs
+        return orders.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -200,15 +204,15 @@ public class OrderServiceImpl implements OrderService {
      * @return the corresponding CommandDTO object
      */
     private CommandDTO convertToDTO(Order order) {
-        Product product = order.getProduct();
+        Product product = order.getProduct(); // Assuming Order has a getProduct() method
 
         return new CommandDTO(
-                order.getOrderId() != null ? order.getOrderId().toString() : null,
+                order.getOrderId() != null ? order.getOrderId().toString() : null, // Adjust based on your Order entity
                 product != null ? product.getName() : null,
                 product != null ? product.getPrice() : null,
-                order.getOrderDate() != null ? order.getOrderDate().toString() : null,
+                order.getOrderDate() != null ? order.getOrderDate().toString() : null, // Adjust based on your Order entity
                 order.getAddress(),
-                order.getEmail()
+                order.getEmail() // Assuming Order has an email field
         );
     }
 }

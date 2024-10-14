@@ -11,6 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.pro_servises.pro.enums.Role.PROVIDER;
+import static com.pro_servises.pro.enums.Role.USER;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -32,26 +37,26 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(expressionInterceptUrlRegistry ->
                         expressionInterceptUrlRegistry
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/signin").permitAll()
                                 .requestMatchers("/signup").permitAll()
-//
-//                                .requestMatchers(POST,"/add_order").permitAll()
-//                                .requestMatchers(GET,"/api/order/get_order/").hasRole("PROVIDER")
-//                                .requestMatchers(GET,"/api/order/gets_order_by_product_id").hasRole("PROVIDER")
-//
-//                                .requestMatchers(POST,"/api/order/get_all_order_by_enterprise_id").hasRole("PROVIDER")
-//                                .requestMatchers(POST,"/add_order").permitAll()
-//                                .requestMatchers("/api/article/**").hasRole("ADMIN")
-//                                .requestMatchers("/api/enterprise/**").permitAll()
-//                                .requestMatchers("/delete_order/**").permitAll()
-//                                .requestMatchers("/gets_order_by_provider_id").permitAll()
-//                                .requestMatchers("/gets_order_by_user_id").permitAll()
-//
-//                                .requestMatchers("/api/product/**").permitAll()
-//
-//                                .requestMatchers("/api/rating/**").permitAll()
-//                                .requestMatchers(GET,"/api/rating/**").permitAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers("/api/article/**").permitAll()
+                                .requestMatchers("/api/article/get_article/**").permitAll()
+                                .requestMatchers("/api/article/get_articles").permitAll()
+
+                                .requestMatchers("/api/contact/**").permitAll()
+
+                                .requestMatchers(POST,"/api/enterprise/**").hasRole("PROVIDER")
+                                .requestMatchers("/api/enterprise/**").permitAll()
+
+                                .requestMatchers("/api/order/**").permitAll()
+
+                                .requestMatchers(POST,"/api/product/**").hasRole("PROVIDER")
+                                .requestMatchers("/api/product/**").permitAll()
+
+                                .requestMatchers("/api/rating/**").hasRole("USER")
+                                .requestMatchers(GET,"/api/rating/**").permitAll()
+                                .requestMatchers(GET,"/api/rating/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin.disable())
                 .addFilterBefore(new JwtAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);

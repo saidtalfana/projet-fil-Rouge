@@ -23,10 +23,8 @@ public class Order {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Integer orderId;
-    @NotBlank(message = "Order date is required")
-    private Date orderDate;
 
-    @NotBlank(message = "Order time is required")
+    private Date orderDate;
     private Time orderTime;
 
     @NotBlank(message = "Name is required")
@@ -49,7 +47,7 @@ public class Order {
     private String customerRequest;
 
     @ManyToOne
-    @JoinColumn(name = "service_id")
+    @JoinColumn(name = "product_id")
     @JsonBackReference(value = "productOrders")
     private Product product;
 
