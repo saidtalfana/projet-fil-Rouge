@@ -15,7 +15,7 @@ services:
     ports:
       - "3307:3306"              # Map host port 3307 to container port 3306
     environment:
-      - MYSQL_DATABASE=servicelink    # Create a database named 'servicelink'
+      - MYSQL_DATABASE=link    # Create a database named 'link'
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes # Allow empty password for the root user
     volumes:
       - db:/var/lib/mysql        # Persist MySQL data

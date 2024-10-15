@@ -50,8 +50,8 @@ class EnterpriseServiceImpTest {
         enterpriseDto.setPhoneNumber("1234567890");
         enterpriseDto.setEmail("contact@talfana.com");
 
-        provider = new Provider(); // Ensure you have the correct constructor or methods
-        provider.setId(1); // Assuming there's a method to set the provider ID
+        provider = new Provider();
+        provider.setId(1);
 
         enterprise = new Enterprise();
         enterprise.setEnterpriseId(1);

@@ -45,7 +45,6 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/contact/**").permitAll()
 
-                                .requestMatchers(POST,"/api/enterprise/**").hasRole("PROVIDER")
                                 .requestMatchers("/api/enterprise/**").permitAll()
 
                                 .requestMatchers("/api/order/**").permitAll()
@@ -54,7 +53,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/product/**").permitAll()
 
                                 .requestMatchers("/api/rating/**").hasRole("USER")
-                                .requestMatchers(GET,"/api/rating/**").permitAll()
                                 .requestMatchers(GET,"/api/rating/**").permitAll()
                                 .anyRequest().authenticated()
                 )

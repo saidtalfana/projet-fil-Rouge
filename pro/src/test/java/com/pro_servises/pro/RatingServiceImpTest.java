@@ -67,14 +67,12 @@ public class RatingServiceImpTest {
 
     @Test
     void testAddRating_ProductNotFound() {
-        // Given
         Integer productId = 1;
         Integer userId = 1;
         Rating rating = new Rating();
 
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
-        // When/Then
         NotFoundException thrown = assertThrows(
                 NotFoundException.class,
                 () -> ratingService.addRating(rating, productId, userId)
